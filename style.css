@@ -3,7 +3,7 @@
   display: none; /* Hidden by default */
   position: fixed;
   bottom: 80px;
-  right: 10px;
+  right: 15px;
   width: 320px;
   height: 400px;
   background-color: #f9f9f9;
@@ -31,7 +31,7 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 65px; /* Space above the input */
+  bottom: 67px; /* Space above the input */
   width: 100%;
   flex-wrap: wrap;
 }
