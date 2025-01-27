@@ -32,6 +32,7 @@ function addMessage(text, sender) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// Scroll behavior for the chat
 chatBox.addEventListener('scroll', function() {
   const isScrolledToBottom = chatBox.scrollHeight - chatBox.scrollTop === chatBox.clientHeight;
   if (isScrolledToBottom) {
@@ -66,7 +67,8 @@ function sendMessage() {
 }
 
 // Toggle chat visibility
-if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+function toggleChat() {
+  if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
     chatContainer.style.display = 'block';
     addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
     popupMessage.style.display = "none"; // Hide popup message when chat is open
@@ -76,28 +78,31 @@ if (chatContainer.style.display === "none" || chatContainer.style.display === ""
   }
 }
 
+// Add event listener to chatbot button for toggling chat
+document.getElementById('chatbotButton').addEventListener('click', toggleChat);
+
 // Load categories
 function loadCategories() {
   categories.forEach(category => {
     const button = document.createElement('button');
     button.className = 'category-button';
     button.textContent = category.name;
-    button.onclick = () => showQuestions(category);
+    button.onclick = () => selectCategory(category.name);
     categoryContainer.appendChild(button);
   });
 }
 
-// Show questions for selected category
-function showQuestions(category) {
+// Handle category button click
+function selectCategory(categoryName) {
   // Clear previous messages
-  chatBox.innerHTML = ''; // Clear the chat box before showing new message
-  
-  // Show the "What can I help you find in [Category]" message
-  addMessage(`What can I help you find in ${category.name}?`, 'bot');
+  chatBox.innerHTML = ''; // Clear the chat box before showing the new message
 
-  // Highlight the selected category button
+  // Show the prompt for the selected category
+  addMessage(`What can I help you find in ${categoryName}?`, 'bot');
+
+  // Optionally, set the selected category in the UI (change the button color)
   document.querySelectorAll('.category-button').forEach(button => {
-    if (button.textContent === category.name) {
+    if (button.textContent === categoryName) {
       button.classList.add('selected'); // Add 'selected' class for styling
     } else {
       button.classList.remove('selected');
@@ -105,8 +110,11 @@ function showQuestions(category) {
   });
 
   // Display category-related questions
-  const categoryQuestions = category.questions;
-  categoryQuestions.forEach(question => {
-    addMessage(question, 'bot');
-  });
+  const category = categories.find(c => c.name === categoryName);
+  if (category) {
+    const categoryQuestions = category.questions;
+    categoryQuestions.forEach(question => {
+      addMessage(question, 'bot');
+    });
+  }
 }
