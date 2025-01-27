@@ -62,7 +62,7 @@
   border-top: 1px solid #ccc;
   position: absolute;
   bottom: 10px; /* At the very bottom of the container */
-  width: 100%;
+  width: 80%;
 }
 
 .input-container input {
