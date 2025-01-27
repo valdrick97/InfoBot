@@ -7,8 +7,6 @@ let categories = [];
 
 // Toggle chat visibility
 function toggleChat() {
-  const chatContainer = document.getElementById('chatContainer');
-  const popupMessage = document.getElementById('popupMessage');
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
     chatContainer.style.display = "block";
     addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
@@ -43,10 +41,10 @@ function addMessage(text, sender) {
   messages.forEach(message => message.classList.add('dim'));
   
   // Create new message
-  const Message = document.createElement('div');
-  Message.className = `message ${sender}-message`;
-  Message.textContent = text;
-  chatBox.appendChild(Message);
+  const message = document.createElement('div');
+  message.className = `message ${sender}-message`;
+  message.textContent = text;
+  chatBox.appendChild(message);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
 
@@ -57,48 +55,31 @@ function loadCategories() {
     const button = document.createElement('button');
     button.className = 'category-button';
     button.textContent = category.name;
-    button.onclick = () => selectCategory(category.name);
+    button.onclick = () => toggleCategory(category);
     categoryContainer.appendChild(button);
   });
 }
 
-// Show prompt for selected category (without displaying questions)
-function showQuestions(category) {
+// Toggle category selection
+function toggleCategory(category) {
   const selectedButton = document.querySelector(`.category-button.selected`);
-
-  // If a category button is already selected, we will toggle it off
+  
   if (selectedButton && selectedButton.textContent === category.name) {
-    // Deselect the button
+    // Deselect if the same category is clicked
     selectedButton.classList.remove('selected');
-    chatBox.innerHTML = ''; // Clear the chat box
-    addMessage('What can I help you with?', 'bot'); // Reset prompt
+    chatBox.innerHTML = ''; // Clear chat box
+    addMessage('What can I help you with?', 'bot');
   } else {
-    // If it's not selected, select the button and show the prompt
-    document.querySelectorAll('.category-button').forEach(button => {
-      button.classList.remove('selected');
-    });
-    const button = document.querySelector(`.category-button[textContent="${category.name}"]`);
-    button.classList.add('selected'); // Select the clicked button
+    // Deselect any previously selected category
+    document.querySelectorAll('.category-button').forEach(button => button.classList.remove('selected'));
+    const button = Array.from(document.querySelectorAll('.category-button')).find(btn => btn.textContent === category.name);
+    button.classList.add('selected'); // Select clicked button
 
     // Show the prompt for the selected category
     chatBox.innerHTML = ''; // Clear previous messages
     addMessage(`What can I help you find in ${category.name}?`, 'bot');
-
-    // Display category-related questions
-    const categoryQuestions = category.questions;
-    categoryQuestions.forEach(question => {
-      addMessage(question, 'bot');
-    });
   }
 }
-
-
-  // Display category-related questions
-  const categoryQuestions = category.questions;
-  categoryQuestions.forEach(question => {
-    addMessage(question, 'bot');
-  });
-
 
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
@@ -128,10 +109,6 @@ function sendMessage() {
 
 // Ensure chat is hidden on page load
 document.addEventListener('DOMContentLoaded', () => {
-  const chatContainer = document.getElementById('chatContainer');
-  const popupMessage = document.getElementById('popupMessage');
-
   chatContainer.style.display = "none"; // Ensure chat is hidden
   popupMessage.style.display = "block"; // Show the popup message
 });
-
