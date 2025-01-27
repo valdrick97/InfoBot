@@ -4,7 +4,7 @@
   position: fixed;
   bottom: 80px;
   right: 10px;
-  width: 300px;
+  width: 320px;
   height: 400px;
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -31,8 +31,9 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 60px; /* Space above the input */
+  bottom: 64px; /* Space above the input */
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .category-button {
@@ -118,4 +119,6 @@
   z-index: 999;
 }
 
-
+.message.dim {
+  opacity: 0.3; /* Adjust opacity to dim the old messages */
+}
