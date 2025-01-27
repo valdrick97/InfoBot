@@ -1,1 +1,19 @@
+{
+  "categories": [
+    {
+      "name": "LMS",
+      "questions": [
+        "How do I reset my password?",
+        "How do I access my courses?"
+      ]
+    },
+    {
+      "name": "Casino",
+      "questions": [
+        "What are the casino hours?",
+        "How do I register for the casino?"
+      ]
+    }
+  ]
+}
 
