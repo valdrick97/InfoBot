@@ -32,6 +32,13 @@ function addMessage(text, sender) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+chatBox.addEventListener('scroll', function() {
+  const isScrolledToBottom = chatBox.scrollHeight - chatBox.scrollTop === chatBox.clientHeight;
+  if (isScrolledToBottom) {
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+});
+
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
@@ -59,9 +66,14 @@ function sendMessage() {
 }
 
 // Toggle chat visibility
-function toggleChat() {
-  chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
-  popupMessage.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
+if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+    chatContainer.style.display = 'block';
+    addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
+    popupMessage.style.display = "none"; // Hide popup message when chat is open
+  } else {
+    chatContainer.style.display = "none";
+    popupMessage.style.display = "block"; // Show the popup when chat is closed
+  }
 }
 
 // Load categories
