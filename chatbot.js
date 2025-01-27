@@ -125,3 +125,13 @@ function sendMessage() {
   addMessage(response, 'bot');
   document.getElementById('userInput').value = '';
 }
+
+// Ensure chat is hidden on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const chatContainer = document.getElementById('chatContainer');
+  const popupMessage = document.getElementById('popupMessage');
+
+  chatContainer.style.display = "none"; // Ensure chat is hidden
+  popupMessage.style.display = "block"; // Show the popup message
+});
+
