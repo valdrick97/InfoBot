@@ -27,6 +27,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/fuzzyset.js"></script>
   <script src="chatbot.js"></script>
+
+  <script>
+    // Add an event listener for the 'Enter' key in case the user wants to submit via keyboard
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage(); // Call sendMessage when 'Enter' is pressed
+      }
+    });
+  </script>
 </body>
 </html>
-
