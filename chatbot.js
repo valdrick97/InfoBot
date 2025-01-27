@@ -7,8 +7,10 @@ let categories = [];
 
 // Toggle chat visibility
 function toggleChat() {
+  const chatContainer = document.getElementById('chatContainer');
+  const popupMessage = document.getElementById('popupMessage');
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-    chatContainer.style.display = 'block';
+    chatContainer.style.display = "block";
     addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
