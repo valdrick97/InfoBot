@@ -31,7 +31,7 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 67px; /* Space above the input */
+  bottom: 70px; /* Space above the input */
   width: 100%;
   flex-wrap: wrap;
 }
