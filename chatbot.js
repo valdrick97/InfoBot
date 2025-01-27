@@ -77,11 +77,24 @@ function loadCategories() {
 
 // Show questions for selected category
 function showQuestions(category) {
+  // Clear previous messages
+  chatBox.innerHTML = ''; // Clear the chat box before showing new message
+  
+  // Show the "What can I help you find in [Category]" message
   addMessage(`What can I help you find in ${category.name}?`, 'bot');
-  const categoryQuestions = category.questions;
 
+  // Highlight the selected category button
+  document.querySelectorAll('.category-button').forEach(button => {
+    if (button.textContent === category.name) {
+      button.classList.add('selected'); // Add 'selected' class for styling
+    } else {
+      button.classList.remove('selected');
+    }
+  });
+
+  // Display category-related questions
+  const categoryQuestions = category.questions;
   categoryQuestions.forEach(question => {
     addMessage(question, 'bot');
   });
 }
-
