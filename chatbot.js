@@ -55,7 +55,7 @@ function loadCategories() {
     const button = document.createElement('button');
     button.className = 'category-button';
     button.textContent = category.name;
-    button.onclick = () => toggleCategorySelection(button, category);
+    button.onclick = () => selectCategory(category.name);
     categoryContainer.appendChild(button);
   });
 }
