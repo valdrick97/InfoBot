@@ -1,1 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Chatbot Icon -->
+  <button id="chatbotButton" onclick="toggleChat()">💬</button>
+
+  <!-- Chat Container -->
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-box" id="chatBox"></div>
+
+    <!-- User Input and Category -->
+    <div class="category-container" id="categoryContainer"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Ask a question..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Pop-up Message -->
+  <div class="popup-message" id="popupMessage">I can help! Ask me anything.</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuzzyset.js"></script>
+  <script src="chatbot.js"></script>
+</body>
+</html>
 
