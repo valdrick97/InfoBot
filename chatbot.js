@@ -36,10 +36,15 @@ fetch('categories.json')
 
 // Add message to chatbox
 function addMessage(text, sender) {
-  const message = document.createElement('div');
-  message.className = `message ${sender}-message`;
-  message.textContent = text;
-  chatBox.appendChild(message);
+  // Dim all existing messages
+  const messages = document.querySelectorAll('.message');
+  messages.forEach(message => message.classList.add('dim'));
+  
+  // Create new message
+  const newMessage = document.createElement('div');
+  newMessage.className = `message ${sender}-message`;
+  newMessage.textContent = text;
+  chatBox.appendChild(newMessage);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
 
@@ -50,27 +55,35 @@ function loadCategories() {
     const button = document.createElement('button');
     button.className = 'category-button';
     button.textContent = category.name;
-    button.onclick = () => showQuestions(category);
+    button.onclick = () => toggleCategorySelection(button, category);
     categoryContainer.appendChild(button);
   });
 }
 
-// Show questions for selected category
+// Show prompt for selected category (without displaying questions)
 function showQuestions(category) {
-  // Clear previous messages
-  chatBox.innerHTML = '';
+  const selectedButton = document.querySelector(`.category-button.selected`);
 
-  // Show the prompt for the selected category
-  addMessage(`What can I help you find in ${category.name}?`, 'bot');
-
-  // Highlight the selected category button
-  document.querySelectorAll('.category-button').forEach(button => {
-    if (button.textContent === category.name) {
-      button.classList.add('selected'); // Add 'selected' class for styling
-    } else {
+  // If a category button is already selected, we will toggle it off
+  if (selectedButton && selectedButton.textContent === category.name) {
+    // Deselect the button
+    selectedButton.classList.remove('selected');
+    chatBox.innerHTML = ''; // Clear the chat box
+    addMessage('What can I help you with?', 'bot'); // Reset prompt
+  } else {
+    // If it's not selected, select the button and show the prompt
+    document.querySelectorAll('.category-button').forEach(button => {
       button.classList.remove('selected');
-    }
-  });
+    });
+    const button = document.querySelector(`.category-button[textContent="${category.name}"]`);
+    button.classList.add('selected'); // Select the clicked button
+
+    // Show the prompt for the selected category
+    chatBox.innerHTML = ''; // Clear previous messages
+    addMessage(`What can I help you find in ${category.name}?`, 'bot');
+  }
+}
+
 
   // Display category-related questions
   const categoryQuestions = category.questions;
