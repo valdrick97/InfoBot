@@ -74,3 +74,14 @@
 .input-container button:hover {
   background-color: #0056b3;
 }
+
+/* Chat box that allows scrolling */
+.chat-box {
+  flex-grow: 1;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  max-height: 100%; /* Ensures it doesn't go beyond the box height */
+  display: flex;
+  flex-direction: column;
+}
+
