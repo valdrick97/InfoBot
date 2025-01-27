@@ -96,7 +96,7 @@ function showQuestions(category) {
   categoryQuestions.forEach(question => {
     addMessage(question, 'bot');
   });
-}
+
 
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
