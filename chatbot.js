@@ -81,6 +81,12 @@ function showQuestions(category) {
     // Show the prompt for the selected category
     chatBox.innerHTML = ''; // Clear previous messages
     addMessage(`What can I help you find in ${category.name}?`, 'bot');
+
+    // Display category-related questions
+    const categoryQuestions = category.questions;
+    categoryQuestions.forEach(question => {
+      addMessage(question, 'bot');
+    });
   }
 }
 
