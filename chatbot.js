@@ -41,10 +41,10 @@ function addMessage(text, sender) {
   messages.forEach(message => message.classList.add('dim'));
   
   // Create new message
-  const newMessage = document.createElement('div');
-  newMessage.className = `message ${sender}-message`;
-  newMessage.textContent = text;
-  chatBox.appendChild(newMessage);
+  const Message = document.createElement('div');
+  Message.className = `message ${sender}-message`;
+  Message.textContent = text;
+  chatBox.appendChild(Message);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
 
