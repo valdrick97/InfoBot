@@ -1,1 +1,13 @@
+{
+  "faqs": [
+    {
+      "question": "How do I reset my password?",
+      "answer": "To reset your password, go to the login page and click 'Forgot Password'."
+    },
+    {
+      "question": "What are the casino hours?",
+      "answer": "The casino is open 24/7."
+    }
+  ]
+}
 
