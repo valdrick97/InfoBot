@@ -120,7 +120,7 @@
   z-index: 999;
 }
 
-* Bot messages (aligned to the left) */
+/* Bot messages (aligned to the left) */
 .bot-message {
   background-color: #e0f7fa; /* Light blue for bot */
   color: black;
@@ -130,6 +130,7 @@
   max-width: 80%;
   align-self: flex-start; /* left side */
   word-wrap: break-word;
+  opacity: 1; /* Make sure bot messages stay bright by default */
 }
 
 /* User messages (aligned to the right) */
@@ -142,8 +143,10 @@
   max-width: 80%;
   align-self: flex-end; /* right side */
   word-wrap: break-word;
+  opacity: 1; /* Make sure user messages stay bright by default */
 }
 
+/* Dimming effect - applied to messages that are older */
 .message.dim {
   opacity: 0.5; /* Adjust opacity to dim the old messages */
 }
