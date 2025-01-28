@@ -101,8 +101,8 @@ startPopupTimer(); // Start popup timer
     // Show the prompt for the selected category
     //chatBox.innerHTML = ''; // Clear previous messages
    // addMessage(`What can I help you find in ${category.name}?`, 'bot');
-  }
-}
+  // }
+// }
 
 // Load FAQ data and categories
 fetch('faqData.json')
