@@ -16,7 +16,7 @@
     <div class="chat-box" id="chatBox"></div>
     <div class="input-container">
       <input id="userInput" type="text" placeholder="Type a message..." />
-      <button id="sendButton" onclick="sendMessage()">Send</button>
+      <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
@@ -37,12 +37,6 @@
         sendMessage(); // Call sendMessage when 'Enter' is pressed
       }
     });
-
-    // Ensure the chatbot starts closed by default
-    function toggleChat() {
-      const chatContainer = document.getElementById('chatContainer');
-      chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
-    }
   </script>
 </body>
 </html>
