@@ -11,13 +11,37 @@
       "name": "Casino",
       "questions": [
         "What are the casino hours?",
-        "How do I register for the casino?"
+        "How do I register for the casino?",
+        "What is the history of the Coushatta Casino Resort?",
+        "When did Coushatta Casino open?",
+        "How did Coushatta Casino start?",
+        "Who owns Coushatta Casino?",
+        "What can you tell me about Coushatta Casino?"
+      ]
+    },
+    {
+      "name": "Tribe",
+      "questions": [
+        "Who are the Coushatta Tribe of Louisiana?",
+        "What is the history of the Coushatta Tribe?",
+        "Tell me about the Coushatta Tribe.",
+        "What can you tell me about the Coushatta people?",
+        "Where is the Coushatta Tribe located?",
+        "How did the Coushatta Tribe come to Louisiana?",
+        "Can you explain the culture of the Coushatta Tribe?"
       ]
     },
     {
       "name": "General",
-      "questions":[
-        "What can you do?"
+      "questions": [
+        "What can you do?",
+        "Do you save my responses?",
+        "Are my messages stored?",
+        "Do you keep track of what I say?",
+        "Is my chat history saved?",
+        "Does this bot store conversations?",
+        "What happens to my messages after I send them?",
+        "Do you log user chats?"
       ]
     }
   ]
