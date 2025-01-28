@@ -39,6 +39,7 @@ function addMessage(message, sender) {
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
 
+// Change or add categories here
 const categories = ["Help", "FAQ", "Support", "Contact"];
 categories.forEach((category) => {
   const button = document.createElement("button");
