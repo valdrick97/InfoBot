@@ -17,12 +17,14 @@
     <div class="chat-box" id="chatBox"></div>
 
     <!-- User Input and Category -->
-    <div class="category-container" id="categoryContainer"></div>
-    <div class="input-container">
-      <input type="text" id="userInput" placeholder="Ask a question..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+    <div id="categoryContainer" class="category-container"></div>
+<div id="chatContainer" class="chat-container">
+  <div id="chatBox" class="chat-box"></div>
+  <div class="input-container">
+    <input id="userInput" type="text" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
   </div>
+</div>
 
   <!-- Pop-up Message -->
   <div class="popup-message" id="popupMessage">I can help! Ask me anything.</div>
