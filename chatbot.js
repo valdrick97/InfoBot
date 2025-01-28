@@ -6,6 +6,7 @@ let faqData = [];
 let fuzzySet = null;
 let categories = [];
 let popupTimeout;
+let isChatInitialized = false;
 
 // Toggle chat visibility
 function toggleChat() {
@@ -13,7 +14,12 @@ function toggleChat() {
     chatContainer.style.display = "block";
     addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
     popupMessage.style.display = "none"; // Hide popup message when chat is open
-    categoryContainer.style.display = "block";
+    categoryContainer.style.display = "flex";
+
+     if (!isChatInitialized) {
+      addMessage("What can I help you with?", "bot"); // Send bot greeting only once
+      isChatInitialized = true;
+     }
   } else {
     chatContainer.style.display = "none";
     popupMessage.style.display = "block"; // Show the popup when chat is closed
@@ -23,6 +29,24 @@ function toggleChat() {
     }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time between 7s and 10s
   }
 }
+
+// Add Message Function
+function addMessage(message, sender) {
+  const messageElement = document.createElement("div");
+  messageElement.className = sender === "bot" ? "bot-message" : "user-message";
+  messageElement.innerText = message;
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+}
+
+const categories = ["Help", "FAQ", "Support", "Contact"];
+categories.forEach((category) => {
+  const button = document.createElement("button");
+  button.className = "category-button";
+  button.innerText = category;
+  button.onclick = () => alert(`Category: ${category}`);
+  categoryContainer.appendChild(button);
+});
 
 function startPopupTimer() {
   setInterval(() => {
