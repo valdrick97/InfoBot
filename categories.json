@@ -13,7 +13,11 @@
         "What are the casino hours?",
         "How do I register for the casino?"
       ]
-    }
+    },
+    {
+      "Name": "General",
+      "questions":[
+        "What can you do",
   ]
 }
 
