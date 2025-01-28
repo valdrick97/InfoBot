@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   chatContainer.style.display = "none"; // Ensure chat is hidden
   popupMessage.style.display = "block"; // Show the popup message
   disableCategoryButtons(); // Disable the category buttons on page load
-  //loadChatHistory(); // Load chat history if available
+  loadChatHistory(); // Load chat history if available
 });
 
 // Toggle chat visibility
@@ -189,17 +189,37 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
   }
 });
 
-// Save chat history to localStorage
-//function saveChatHistory() {
-  //const chatMessages = Array.from(chatBox.children).map(el => ({
-   // text: el.textContent,
-  //  sender: el.classList.contains('user-message') ? 'user' : 'bot'
-//  }));
-//  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
-//}
+// Save chat history to localStorage with a timestamp
+function saveChatHistory() {
+  const chatMessages = Array.from(chatBox.children).map(el => ({
+    text: el.textContent,
+    sender: el.classList.contains('user-message') ? 'user' : 'bot',
+    timestamp: Date.now() // Add a timestamp when the message is saved
+  }));
+  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
+}
 
-// Load chat history from localStorage
-//function loadChatHistory() {
- // const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
- // chatHistory.forEach(msg => addMessage(msg.text, msg.sender));
-//}
+// Load chat history from localStorage and filter out expired messages
+function loadChatHistory() {
+  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours (in milliseconds)
+  const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+  
+  const validChatHistory = chatHistory.filter(msg => {
+    // Check if the message is still within the expiration time
+    return Date.now() - msg.timestamp < EXPIRATION_TIME;
+  });
+
+  // Load only valid messages
+  validChatHistory.forEach(msg => addMessage(msg.text, msg.sender));
+  
+  // Save the filtered history back to localStorage
+  localStorage.setItem('chatHistory', JSON.stringify(validChatHistory));
+}
+
+// Optional: Clear chat history after a set duration
+function clearChatHistoryAfterTime() {
+  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours
+  setTimeout(() => {
+    localStorage.removeItem('chatHistory'); // Remove chat history after the set time
+  }, EXPIRATION_TIME);
+}
