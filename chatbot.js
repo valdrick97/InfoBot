@@ -12,9 +12,11 @@ function toggleChat() {
     chatContainer.style.display = "block";
     addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
     popupMessage.style.display = "none"; // Hide popup message when chat is open
+    categoryContainer.style.display = "block";
   } else {
     chatContainer.style.display = "none";
     popupMessage.style.display = "block"; // Show the popup when chat is closed
+    categoryContainer.style.display = "none";
     setTimeout(() => {
       popupMessage.style.display = "none";
     }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time between 7s and 10s
