@@ -28,24 +28,28 @@
   box-sizing: border-box;
 }
 
-/* Category Buttons (Placed at the bottom of the chat box) */
+/* Category Buttons */
 .category-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Stack buttons vertically */
   position: absolute;
-  bottom: 70px; /* Space above the input */
-  width: 100%;
-  flex-wrap: wrap;
+  top: 10px; /* Start from top */
+  left: 10px; /* 10px from the left */
+  width: auto; /* Adjust width to fit buttons */
+  max-height: calc(100% - 20px); /* Limit height to the chat box's height */
+  overflow-y: auto; /* Allow vertical scrolling */
+  padding: 10px 0; /* Padding for spacing */
 }
 
 .category-button {
   padding: 10px 15px;
-  margin: 0 5px;
+  margin: 5px 0; /* Vertical margin to stack buttons with space */
   background-color: #eee;
   border: none;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s;
+  width: 200px; /* Adjust button width */
 }
 
 .category-button.selected {
