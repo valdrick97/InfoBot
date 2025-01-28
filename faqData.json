@@ -9,9 +9,44 @@
       "answer": "The casino is open 24/7."
     },
     {
-      "question": "What can you do",
+      "question": "What can you do?",
       "answer": "I can assist with any basic questions you have about CCR and Reservations. And don't worry—exciting new features are on the way soon!"
+    },
+    {
+      "question": "Do you save my responses?",
+      "answer": "I temporarily save your responses to improve your experience during the chat. However, all messages are cleared after a set period to protect your privacy."
+    },
+    {
+      "question": "Are my messages stored?",
+      "answer": "Your chat history is only saved temporarily during this session and is erased later to maintain your privacy."
+    },
+    {
+      "question": "What is the history of the Coushatta Casino Resort?",
+      "answer": "Coushatta Casino Resort opened in 1995 and is owned by the Coushatta Tribe of Louisiana. It is one of the largest gaming resorts in the state, offering a wide range of gaming, dining, and entertainment options."
+    },
+    {
+      "question": "Who are the Coushatta Tribe of Louisiana?",
+      "answer": "The Coushatta Tribe of Louisiana, also known as the Koasati, are a federally recognized Native American tribe. They originally migrated from Alabama and now reside in Allen Parish, Louisiana."
+    },
+    {
+      "question": "What is the history of the Coushatta Tribe?",
+      "answer": "The Coushatta Tribe of Louisiana has a rich history dating back centuries. They are descendants of the Koasati people and are known for their cultural traditions, language, and contributions to the local community."
+    },
+    {
+      "question": "When did Coushatta Casino open?",
+      "answer": "Coushatta Casino Resort opened in 1995."
+    },
+    {
+      "question": "How did Coushatta Casino start?",
+      "answer": "The casino was established by the Coushatta Tribe of Louisiana in 1995 to support the local community and provide entertainment."
+    },
+    {
+      "question": "Where is the Coushatta Tribe located?",
+      "answer": "The Coushatta Tribe resides in Allen Parish, Louisiana."
+    },
+    {
+      "question": "Can you explain the culture of the Coushatta Tribe?",
+      "answer": "The Coushatta Tribe is known for their cultural traditions, including basket weaving, language preservation, and community engagement."
     }
   ]
 }
-
