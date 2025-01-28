@@ -100,7 +100,7 @@
   background-color: #0056b3;
 }
 
-/* Chatbot button (small circle) */
+/* Chatbot button */
 #chatbotButton {
   position: fixed;
   bottom: 20px;
@@ -109,7 +109,7 @@
   height: 60px;
   background-color: #007bff;
   color: white;
-  border-radius: 50%; /* This ensures the circle shape */
+  border-radius: 50%; /* Circle shape */
   font-size: 30px;
   border: none;
   display: flex;
@@ -117,7 +117,99 @@
   justify-content: center;
   cursor: pointer;
   z-index: 1000;
+  overflow: hidden; /* Prevent the icon from overflowing */
+  transition: all 0.3s ease; /* Smooth transition */
 }
+
+#chatbotButton img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease, opacity 0.3s ease; /* Smooth transition */
+}
+
+/* Animation when opening chat (spin, jump, and move up) */
+@keyframes openChatAnimation {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(360deg) translateY(-20px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Animation when closing chat (jump and pull down) */
+@keyframes closeChatAnimation {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(15px) scale(1.2);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* When chat is open */
+#chatbotButton.open img {
+  animation: openChatAnimation 0.5s ease forwards;
+}
+
+/* When chat is closed */
+#chatbotButton.close img {
+  animation: closeChatAnimation 0.5s ease forwards;
+}
+
+/* Chat Container - Initially hidden, for smooth opening/closing */
+.chat-container {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 25px;
+  width: 350px;
+  height: 400px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Smooth transition for opening/closing the chat container */
+.chat-container.open {
+  display: flex;
+  animation: openChatContainer 0.5s ease-in-out forwards;
+}
+
+/* Smooth animation for opening */
+@keyframes openChatContainer {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Smooth animation for closing */
+@keyframes closeChatContainer {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+    display: none;
+  }
+}
+
 
 /* Pop-up Message */
 .popup-message {
