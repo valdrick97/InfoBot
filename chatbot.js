@@ -1,7 +1,7 @@
 const chatContainer = document.getElementById('chatContainer');
 const popupMessage = document.getElementById('popupMessage');
 const chatBox = document.getElementById('chatBox');
-const categoryContainer = document.getElementById('categoryContainer');
+// const categoryContainer = document.getElementById('categoryContainer');
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
@@ -72,35 +72,35 @@ function startPopupTimer() {
 startPopupTimer(); // Start popup timer
 
 // Load categories and display buttons (this part will stay for future use)
-function loadCategories() {
-  categoryContainer.innerHTML = ''; // Clear any existing buttons
-  categories.forEach(category => {
-    const button = document.createElement('button');
-    button.className = 'category-button';
-    button.textContent = category.name;
-    button.onclick = () => toggleCategory(category);
-    categoryContainer.appendChild(button);
-  });
-}
+//function loadCategories() {
+  //categoryContainer.innerHTML = ''; // Clear any existing buttons
+  //categories.forEach(category => {
+    //const button = document.createElement('button');
+    //button.className = 'category-button';
+    //button.textContent = category.name;
+    //button.onclick = () => toggleCategory(category);
+    //categoryContainer.appendChild(button);
+  //});
+//}
 
 // Toggle category selection
-function toggleCategory(category) {
-  const selectedButton = document.querySelector(`.category-button.selected`);
+//function toggleCategory(category) {
+  //const selectedButton = document.querySelector(`.category-button.selected`);
   
-  if (selectedButton && selectedButton.textContent === category.name) {
+  //if (selectedButton && selectedButton.textContent === category.name) {
     // Deselect if the same category is clicked
-    selectedButton.classList.remove('selected');
-    chatBox.innerHTML = ''; // Clear chat box
-    addMessage('What can I help you with?', 'bot');
-  } else {
-    // Deselect any previously selected category
-    document.querySelectorAll('.category-button').forEach(button => button.classList.remove('selected'));
-    const button = Array.from(document.querySelectorAll('.category-button')).find(btn => btn.textContent === category.name);
-    button.classList.add('selected'); // Select clicked button
+    //selectedButton.classList.remove('selected');
+    //chatBox.innerHTML = ''; // Clear chat box
+    //addMessage('What can I help you with?', 'bot');
+ // } else {
+   // // Deselect any previously selected category
+   // document.querySelectorAll('.category-button').forEach(button => button.classList.remove('selected'));
+   // const button = Array.from(document.querySelectorAll('.category-button')).find(btn => btn.textContent === category.name);
+   // button.classList.add('selected'); // Select clicked button
 
     // Show the prompt for the selected category
-    chatBox.innerHTML = ''; // Clear previous messages
-    addMessage(`What can I help you find in ${category.name}?`, 'bot');
+    //chatBox.innerHTML = ''; // Clear previous messages
+   // addMessage(`What can I help you find in ${category.name}?`, 'bot');
   }
 }
 
@@ -113,13 +113,13 @@ fetch('faqData.json')
   })
   .catch(error => console.error('Error loading FAQ data:', error));
 
-fetch('categories.json')
-  .then(response => response.json())
-  .then(data => {
-    categories = data.categories;
-    loadCategories();
-  })
-  .catch(error => console.error('Error loading categories:', error));
+//fetch('categories.json')
+  //.then(response => response.json())
+  //.then(data => {
+  //categories = data.categories;
+    //loadCategories();
+  //})
+  //.catch(error => console.error('Error loading categories:', error));
 
 // Handle user input and bot response
 function sendMessage() {
