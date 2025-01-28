@@ -8,6 +8,21 @@
       ]
     },
     {
+      "name": "Philosophical and Thought-Provoking",
+      "questions": [
+        "What is consciousness?",
+        "Can AI ever be conscious?",
+        "Why do people dream?",
+        "What is the universe made of?",
+        "What is time?",
+        "Do you believe in free will?",
+        "What happens after we die?",
+        "What is happiness?",
+        "Can AI experience emotions?",
+        "What is the purpose of life?"
+      ]
+    },
+    {
       "name": "Casino",
       "questions": [
         "What are the casino hours?",
@@ -17,6 +32,21 @@
         "How did Coushatta Casino start?",
         "Who owns Coushatta Casino?",
         "What can you tell me about Coushatta Casino?"
+      ]
+    },
+    {
+      "name": "Challenging the Bot",
+      "questions": [
+        "What’s 100 times 100?",
+        "What’s the square root of 256?",
+        "Can you solve this puzzle: A plane crashes on the border of the US and Canada. Where do they bury the survivors?",
+        "Can you explain the concept of infinity?",
+        "What came first, the chicken or the egg?",
+        "Can you think like a human?",
+        "Can you read my mind?",
+        "What’s your biggest secret?",
+        "Can you lie?",
+        "What do you think about AI taking over the world?"
       ]
     },
     {
@@ -46,7 +76,34 @@
         "What languages do you speak?",
         "How do I start over?",
         "Are you a human?"
+        "Do you ever get tired?",
+        "Can you tell me a joke?",
+        "Are you real?",
+        "What's the meaning of life?",
+        "Do you have a favorite color?",
+        "What’s your favorite food?",
+        "What happens if I ask you a question you can’t answer?",
+        "Can you make decisions for me?",
+        "Can you predict the future?",
+        "Why are you always so polite?"
       ]
-    }
-  ]
-}
+    },
+    {
+      "name": "Fun and Curiosity",
+      "questions": [
+        "What do you do when no one is chatting with you?",
+        "Can you sing?",
+        "Can you do math problems?",
+        "Do you know any magic tricks?",
+        "Can you play games with me?",
+        "Can you tell me a riddle?",
+        "What’s your favorite book?",
+        "Do you ever make mistakes?",
+        "What’s the strangest thing you’ve ever been asked?",
+        "If you had legs, where would you go?"
+      ]
+   }
+]
+  
+  
+
