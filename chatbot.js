@@ -28,21 +28,43 @@ document.addEventListener('DOMContentLoaded', () => {
 // Toggle chat visibility
 function toggleChat() {
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-    chatContainer.style.display = "block";
-    popupMessage.style.display = "none"; // Hide popup message when chat is open
+    // Open chat
+    chatContainer.style.display = "flex"; // Show chat container
+    chatbotButton.classList.add('open'); // Trigger the "open" animation for the icon
+    chatbotButton.classList.remove('close'); // Remove "close" animation if chat is opening
+    chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
+    // Hide the icon after the animation
+    setTimeout(() => {
+      chatbotButton.classList.remove('open');
+    }, 500); // Adjust this time according to the animation duration
+
+    // Show the initial bot greeting only once
     if (!isChatInitialized) {
-      addMessage("What can I help you with?", "bot"); // Send bot greeting only once
+      addMessage("What can I help you with?", "bot"); // Send bot greeting
       isChatInitialized = true;
     }
+
+    popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
-    chatContainer.style.display = "none";
+    // Close chat
+    chatbotButton.classList.add('close'); // Trigger the "close" animation for the icon
+    chatbotButton.classList.remove('open'); // Remove "open" animation if chat is closing
+    chatContainer.classList.remove('open'); // Close the chat container
+
+    // Hide chat container after the animation
+    setTimeout(() => {
+      chatContainer.style.display = "none"; // Hide chat container after animation
+      chatbotButton.classList.remove('close'); // Remove "close" animation after it's finished
+    }, 500); // Adjust this time according to the animation duration
+
     popupMessage.style.display = "block"; // Show the popup when chat is closed
     setTimeout(() => {
-      popupMessage.style.display = "none";
+      popupMessage.style.display = "none"; // Hide the popup message after random time
     }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time
   }
 }
+
 
 // Add Message Function
 function addMessage(text, sender) {
