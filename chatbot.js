@@ -1,6 +1,7 @@
 const chatContainer = document.getElementById('chatContainer');
 const popupMessage = document.getElementById('popupMessage');
 const chatBox = document.getElementById('chatBox');
+const categoryContainer = document.getElementById('categoryContainer');
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
