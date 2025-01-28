@@ -119,6 +119,30 @@
   z-index: 999;
 }
 
+* Bot messages (aligned to the right) */
+.bot-message {
+  background-color: #e0f7fa; /* Light blue for bot */
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  align-self: flex-end; /* Right side */
+  word-wrap: break-word;
+}
+
+/* User messages (aligned to the left) */
+.user-message {
+  background-color: #c8e6c9; /* Light green for user */
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  align-self: flex-start; /* Left side */
+  word-wrap: break-word;
+}
+
 .message.dim {
   opacity: 0.3; /* Adjust opacity to dim the old messages */
 }
