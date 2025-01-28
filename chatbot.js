@@ -6,6 +6,7 @@ let faqData = [];
 let fuzzySet = null;
 let categories = [];
 let popupTimeout;
+let popupInterval;
 let isChatInitialized = false;
 
 // Disable category buttons (keeping them in code for future use)
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   chatContainer.style.display = "none"; // Ensure chat is hidden
   popupMessage.style.display = "block"; // Show the popup message
   disableCategoryButtons(); // Disable the category buttons on page load
+  loadChatHistory(); // Load chat history if available
 });
 
 // Toggle chat visibility
@@ -65,7 +67,6 @@ function toggleChat() {
   }
 }
 
-
 // Add Message Function
 function addMessage(text, sender) {
   const messageElement = document.createElement('div');
@@ -73,6 +74,7 @@ function addMessage(text, sender) {
   messageElement.textContent = text;
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+  saveChatHistory(); // Save chat history after each message
 }
 
 // Show popup message
@@ -85,8 +87,10 @@ function showPopup() {
   }
 }
 
+// Start popup timer with debouncing
 function startPopupTimer() {
-  setInterval(() => {
+  clearInterval(popupInterval); // Clear existing interval
+  popupInterval = setInterval(() => {
     showPopup();
   }, Math.random() * (40000 - 30000) + 30000); // Popup every 30-40 seconds
 }
@@ -128,12 +132,18 @@ startPopupTimer(); // Start popup timer
 
 // Load FAQ data and categories
 fetch('faqData.json')
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to load FAQ data');
+    return response.json();
+  })
   .then(data => {
     faqData = data.faqs;
     fuzzySet = FuzzySet(faqData.map(faq => faq.question));
   })
-  .catch(error => console.error('Error loading FAQ data:', error));
+  .catch(error => {
+    console.error('Error loading FAQ data:', error);
+    addMessage("Sorry, I'm having trouble loading my knowledge base. Please try again later.", 'bot');
+  });
 
 //fetch('categories.json')
   //.then(response => response.json())
@@ -145,8 +155,15 @@ fetch('faqData.json')
 
 // Handle user input and bot response
 function sendMessage() {
-  const userInput = document.getElementById('userInput').value;
-  if (!userInput.trim()) return;
+  const userInput = document.getElementById('userInput').value.trim();
+  if (!userInput) {
+    addMessage("Please enter a question.", 'bot');
+    return;
+  }
+  if (userInput.length > 200) {
+    addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
+    return;
+  }
 
   addMessage(userInput, 'user');
   let bestMatch = fuzzySet.get(userInput);
@@ -156,6 +173,8 @@ function sendMessage() {
     let matchedQuestion = bestMatch[0][1];
     let faq = faqData.find(f => f.question === matchedQuestion);
     response = faq ? faq.answer : response;
+  } else {
+    response = "I couldn't find a matching answer. Can you rephrase your question?";
   }
 
   addMessage(response, 'bot');
@@ -168,3 +187,18 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
     sendMessage();
   }
 });
+
+// Save chat history to localStorage
+function saveChatHistory() {
+  const chatMessages = Array.from(chatBox.children).map(el => ({
+    text: el.textContent,
+    sender: el.classList.contains('user-message') ? 'user' : 'bot'
+  }));
+  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
+}
+
+// Load chat history from localStorage
+function loadChatHistory() {
+  const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+  chatHistory.forEach(msg => addMessage(msg.text, msg.sender));
+}
