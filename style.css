@@ -127,7 +127,7 @@
   border-radius: 10px;
   margin-bottom: 10px;
   max-width: 80%;
-  align-self: flex-end; /* Right side */
+  align-self: flex-start; /* left side */
   word-wrap: break-word;
 }
 
@@ -139,7 +139,7 @@
   border-radius: 10px;
   margin-bottom: 10px;
   max-width: 80%;
-  align-self: flex-start; /* Left side */
+  align-self: flex-end; /* right side */
   word-wrap: break-word;
 }
 
