@@ -41,7 +41,11 @@
         "Is my chat history saved?",
         "Does this bot store conversations?",
         "What happens to my messages after I send them?",
-        "Do you log user chats?"
+        "Do you log user chats?",
+        "How do I contact support?",
+        "What languages do you speak?",
+        "How do I start over?",
+        "Are you a human?"
       ]
     }
   ]
