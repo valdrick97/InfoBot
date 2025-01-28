@@ -29,44 +29,44 @@
 }
 
 /* Category Buttons */
-.category-container {
-  display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  position: absolute;
-  top: 80px; /* Start from top */
-  left: 370px; /* 10px from the left */
-  width: 100px; /* Adjust width to fit buttons */
-  gap: 10px;
-  max-height: calc(100% - 20px); /* Limit height to the chat box's height */
-  overflow-y: auto; /* Allow vertical scrolling */
-  background-color: #f1f1f1; /* Light background color for visibility */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 999; /* Ensure it appears above other elements */
-  padding: 10px 0; /* Padding for spacing */
-}
+/* .category-container { */
+  /* display: flex; */
+  /* flex-direction: column; /* Stack buttons vertically */
+  /* position: absolute; */
+ /* top: 80px; /* Start from top */
+ /* left: 370px; /* 10px from the left */
+ /* width: 100px; /* Adjust width to fit buttons */
+ /* gap: 10px;
+ /* max-height: calc(100% - 20px); /* Limit height to the chat box's height */
+ /* overflow-y: auto; /* Allow vertical scrolling */
+  /* background-color: #f1f1f1; /* Light background color for visibility */
+  /* border-radius: 10px; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+ /* z-index: 999; /* Ensure it appears above other elements */
+  /* padding: 10px 0; /* Padding for spacing */
+/*}
 
-.category-button {
-  display: block; /* Make buttons stack vertically */
-  width: 100%; /* Take the full width of the container */
-  padding: 10px 15px;
-  margin-bottom: 10px; /* Add space between buttons */
-  background-color: #eee;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s;
-}
+/* .category-button { */
+ /* display: block; /* Make buttons stack vertically */
+ /* width: 100%; /* Take the full width of the container */
+ /* padding: 10px 15px; */
+ /* margin-bottom: 10px; /* Add space between buttons */
+ /* background-color: #eee; */
+ /* border: none; */
+ /* border-radius: 15px; */
+ /* cursor: pointer; */ 
+ /* text-align: center; */
+/*  transition: all 0.3s; */
+/* } */
 
-.category-button.selected {
-  background-color: #4caf50; /* Highlighted color */
-  color: white;
-}
+/* .category-button.selected { */
+/*  background-color: #4caf50; /* Highlighted color */
+/*  color: white; */
+/* } */
 
-.category-button:hover {
-  background-color: #ddd;
-}
+/* .category-button:hover { */
+/*  background-color: #ddd; */
+/* } */
 
 /* Input container (Text Box at the Bottom) */
 .input-container {
