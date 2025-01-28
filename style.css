@@ -24,6 +24,7 @@
   max-height: calc(100% - 60px); /* Adjust height to avoid covering input area */
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 /* Category Buttons (Placed at the bottom of the chat box) */
@@ -119,7 +120,7 @@
   z-index: 999;
 }
 
-* Bot messages (aligned to the right) */
+* Bot messages (aligned to the left) */
 .bot-message {
   background-color: #e0f7fa; /* Light blue for bot */
   color: black;
@@ -131,7 +132,7 @@
   word-wrap: break-word;
 }
 
-/* User messages (aligned to the left) */
+/* User messages (aligned to the right) */
 .user-message {
   background-color: #c8e6c9; /* Light green for user */
   color: black;
@@ -144,5 +145,5 @@
 }
 
 .message.dim {
-  opacity: 0.3; /* Adjust opacity to dim the old messages */
+  opacity: 0.5; /* Adjust opacity to dim the old messages */
 }
