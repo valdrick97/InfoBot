@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   chatContainer.style.display = "none"; // Ensure chat is hidden
   popupMessage.style.display = "block"; // Show the popup message
   disableCategoryButtons(); // Disable the category buttons on page load
-  loadChatHistory(); // Load chat history if available
+  //loadChatHistory(); // Load chat history if available
 });
 
 // Toggle chat visibility
