@@ -8,10 +8,21 @@ let categories = [];
 let popupTimeout;
 let isChatInitialized = false;
 
+// Disable category buttons (keeping them in code for future use)
+function disableCategoryButtons() {
+  const buttons = document.querySelectorAll('.category-button');
+  buttons.forEach(button => {
+    button.disabled = true; // Disable the buttons
+    button.style.pointerEvents = 'none'; // Prevent interaction (optional, but good for visual clarity)
+    button.style.opacity = '0.5'; // Make the buttons look disabled (optional)
+  });
+}
+
 // Ensure chat is hidden on page load
 document.addEventListener('DOMContentLoaded', () => {
   chatContainer.style.display = "none"; // Ensure chat is hidden
   popupMessage.style.display = "block"; // Show the popup message
+  disableCategoryButtons(); // Disable the category buttons on page load
 });
 
 // Toggle chat visibility
@@ -19,7 +30,6 @@ function toggleChat() {
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
     chatContainer.style.display = "block";
     popupMessage.style.display = "none"; // Hide popup message when chat is open
-    categoryContainer.style.display = "flex"; // Ensure category buttons are shown
 
     if (!isChatInitialized) {
       addMessage("What can I help you with?", "bot"); // Send bot greeting only once
@@ -28,7 +38,6 @@ function toggleChat() {
   } else {
     chatContainer.style.display = "none";
     popupMessage.style.display = "block"; // Show the popup when chat is closed
-    categoryContainer.style.display = "none"; // Hide category buttons
     setTimeout(() => {
       popupMessage.style.display = "none";
     }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time
@@ -62,7 +71,7 @@ function startPopupTimer() {
 
 startPopupTimer(); // Start popup timer
 
-// Load categories and display buttons
+// Load categories and display buttons (this part will stay for future use)
 function loadCategories() {
   categoryContainer.innerHTML = ''; // Clear any existing buttons
   categories.forEach(category => {
