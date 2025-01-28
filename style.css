@@ -32,9 +32,9 @@
 .category-container {
   display: flex;
   flex-direction: column; /* Stack buttons vertically */
-  position: fixed;
+  position: absolute;
   top: 80px; /* Start from top */
-  left: 10px; /* 10px from the left */
+  left: 370px; /* 10px from the left */
   width: 100px; /* Adjust width to fit buttons */
   gap: 10px;
   max-height: calc(100% - 20px); /* Limit height to the chat box's height */
