@@ -21,7 +21,7 @@
   flex-grow: 1;
   overflow-y: auto; /* Vertical scrolling */
   padding: 10px;
-  max-height: calc(100% - 60px); /* Adjust height to avoid covering input area */
+  max-height: calc(100% - 50px); /* Adjust height to avoid covering input area */
   display: flex;
   flex-direction: column;
   gap: 10px;
