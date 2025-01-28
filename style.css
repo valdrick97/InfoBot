@@ -30,12 +30,13 @@
 
 /* Category Buttons */
 .category-container {
-  display: flex;
+  display: column;
   flex-direction: column; /* Stack buttons vertically */
-  position: absolute;
-  top: 0px; /* Start from top */
-  left: -120px; /* 10px from the left */
+  position: fixed;
+  top: 80px; /* Start from top */
+  left: 10px; /* 10px from the left */
   width: 100px; /* Adjust width to fit buttons */
+  gap: 10px;
   max-height: calc(100% - 20px); /* Limit height to the chat box's height */
   overflow-y: auto; /* Allow vertical scrolling */
   background-color: #f1f1f1; /* Light background color for visibility */
@@ -48,13 +49,14 @@
 .category-button {
   display: block; /* Make buttons stack vertically */
   width: 100%; /* Take the full width of the container */
-  padding: 10px 5px;
+  padding: 10px 15px;
   margin-bottom: 10px; /* Add space between buttons */
   background-color: #eee;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   cursor: pointer;
   text-align: center;
+  transition: all 0.3s;
 }
 
 .category-button.selected {
