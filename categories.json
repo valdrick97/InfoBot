@@ -15,9 +15,10 @@
       ]
     },
     {
-      "Name": "General",
+      "name": "General",
       "questions":[
-        "What can you do",
+        "What can you do"
+      ]
+    }
   ]
 }
-
