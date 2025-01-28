@@ -19,7 +19,7 @@
 /* Chat Box - Allow scrolling and ensure it stays within the container */
 .chat-box {
   flex-grow: 1;
-  overflow-y: auto; /* Vertical scrolling */
+  overflow-y: 90%; /* Vertical scrolling */
   padding: 10px;
   max-height: calc(100% - 50px); /* Adjust height to avoid covering input area */
   display: flex;
