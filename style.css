@@ -25,6 +25,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-sizing: border-box;
 }
 
 /* Category Buttons (Placed at the bottom of the chat box) */
@@ -62,8 +63,9 @@
   padding: 10px;
   border-top: 1px solid #ccc;
   position: absolute;
-  bottom: 10px; /* At the very bottom of the container */
+  bottom: 0; /* At the very bottom of the container */
   width: 95%;
+  background-color: #fff;
 }
 
 .input-container input {
