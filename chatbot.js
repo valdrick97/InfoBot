@@ -190,16 +190,16 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
 });
 
 // Save chat history to localStorage
-function saveChatHistory() {
-  const chatMessages = Array.from(chatBox.children).map(el => ({
-    text: el.textContent,
-    sender: el.classList.contains('user-message') ? 'user' : 'bot'
-  }));
-  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
-}
+//function saveChatHistory() {
+  //const chatMessages = Array.from(chatBox.children).map(el => ({
+   // text: el.textContent,
+  //  sender: el.classList.contains('user-message') ? 'user' : 'bot'
+//  }));
+//  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
+//}
 
 // Load chat history from localStorage
-function loadChatHistory() {
-  const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-  chatHistory.forEach(msg => addMessage(msg.text, msg.sender));
-}
+//function loadChatHistory() {
+ // const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+ // chatHistory.forEach(msg => addMessage(msg.text, msg.sender));
+//}
