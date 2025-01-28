@@ -47,6 +47,24 @@
     {
       "question": "Can you explain the culture of the Coushatta Tribe?",
       "answer": "The Coushatta Tribe is known for their cultural traditions, including basket weaving, language preservation, and community engagement."
+    },
+     {
+      "question": "How do I contact support?",
+      "answer": "You can contact support by emailing support@example.com or calling 1-800-123-4567."
+    },
+    {
+      "question": "What languages do you speak?",
+      "answer": "I can currently respond in English, but additional languages may be added in the future!"
+    },
+    {
+      "question": "How do I start over?",
+      "answer": "Just type 'restart' or refresh the page to start a new conversation."
+    },
+    {
+      "question": "Are you a human?",
+      "answer": "No, I’m a chatbot, here to assist you with any questions or information you need!"
     }
+  ]
+}
   ]
 }
