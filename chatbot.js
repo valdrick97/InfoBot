@@ -17,16 +17,17 @@ function toggleChat() {
     popupMessage.style.display = "block"; // Show the popup when chat is closed
     setTimeout(() => {
       popupMessage.style.display = "none";
-    },  Math.random() * (10000 - 7000) + 7000);
+    }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time between 7s and 10s
   }
 }
 
-funtion startPopupTimer() {
+function startPopupTimer() {
   setInterval(() => {
     showPopup();
-  }, Math.random() * (40000 - 30000) + 300000));
+  }, Math.random() * (40000 - 30000) + 30000); // Popup appears after random time between 30s and 40s
 }
-start PopupTimer();
+
+startPopupTimer(); // Correct function call
 
 // Load FAQ data and categories
 fetch('faqData.json')
