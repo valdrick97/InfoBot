@@ -37,7 +37,9 @@ fetch('categories.json')
 // Add message to chatbox
 function addMessage(text, sender) {
   // Dim only previous messages of the same type (bot or user)
-  const messages = document.querySelectorAll('.message');
+  const otherSender = sender === 'user' ? 'bot' : 'user';
+  const messages = document.querySelectorAll(`.${otherSender}-message`);
+  
   messages.forEach(message => message.classList.add('dim'));
   
   // Create new message
