@@ -17,7 +17,7 @@ function toggleChat() {
     popupMessage.style.display = "block"; // Show the popup when chat is closed
     setTimeout(() => {
       popupMessage.style.display = "none";
-    }  Math.random() * (10000 - 7000) + 7000);
+    }  Math.random(() * (10000 - 7000) + 7000);
   }
 }
 
