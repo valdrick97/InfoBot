@@ -34,16 +34,16 @@
   flex-direction: column; /* Stack buttons vertically */
   position: fixed;
   top: 80px; /* Start from top */
-  right: 390px; /* Place to the left of the chat container */
-  width: 120px; /* Adjust width to fit buttons */
+  left: 10px; /* 10px from the left */
+  width: 100px; /* Adjust width to fit buttons */
   gap: 10px;
-  max-height: 80%; /* Limit height to the chat box's height */
+  max-height: calc(100% - 20px); /* Limit height to the chat box's height */
   overflow-y: auto; /* Allow vertical scrolling */
   background-color: #f1f1f1; /* Light background color for visibility */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 999; /* Ensure it appears above other elements */
-  padding: 10px; /* Padding for spacing */
+  padding: 10px 0; /* Padding for spacing */
 }
 
 .category-button {
@@ -75,9 +75,8 @@
   border-top: 1px solid #ccc;
   position: absolute;
   bottom: 0; /* At the very bottom of the container */
-  width: calc(100% - 20px); /* Ensure proper spacing within the container */
+  width: 95%;
   background-color: #fff;
-  box-sizing: border-box;
 }
 
 .input-container input {
@@ -123,8 +122,8 @@
 /* Pop-up Message */
 .popup-message {
   position: fixed;
-  bottom: 100px; /* Adjust the distance from the bottom */
-  right: 20px; /* Ensure proper alignment */
+  bottom: 100px;  /* Adjust the distance from the bottom */
+  right: 10px;
   background-color: #ff9800;
   color: white;
   padding: 10px 20px;
@@ -142,8 +141,9 @@
   border-radius: 10px;
   margin-bottom: 10px;
   max-width: 80%;
-  align-self: flex-start; /* Left side */
+  align-self: flex-start; /* left side */
   word-wrap: break-word;
+  opacity: 1; /* Make sure bot messages stay bright by default */
 }
 
 /* User messages (aligned to the right) */
@@ -154,6 +154,7 @@
   border-radius: 10px;
   margin-bottom: 10px;
   max-width: 80%;
-  align-self: flex-end; /* Right side */
+  align-self: flex-end; /* right side */
   word-wrap: break-word;
+  opacity: 1; /* Make sure user messages stay bright by default */
 }
