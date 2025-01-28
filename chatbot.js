@@ -12,87 +12,53 @@ let isChatInitialized = false;
 function toggleChat() {
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
     chatContainer.style.display = "block";
-    addMessage('What can I help you with?', 'bot'); // Correct prompt when chat opens
     popupMessage.style.display = "none"; // Hide popup message when chat is open
     categoryContainer.style.display = "flex";
 
-     if (!isChatInitialized) {
+    if (!isChatInitialized) {
       addMessage("What can I help you with?", "bot"); // Send bot greeting only once
       isChatInitialized = true;
-     }
+    }
   } else {
     chatContainer.style.display = "none";
     popupMessage.style.display = "block"; // Show the popup when chat is closed
     categoryContainer.style.display = "none";
     setTimeout(() => {
       popupMessage.style.display = "none";
-    }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time between 7s and 10s
+    }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time
   }
 }
 
 // Add Message Function
-function addMessage(message, sender) {
-  const messageElement = document.createElement("div");
-  messageElement.className = sender === "bot" ? "bot-message" : "user-message";
-  messageElement.innerText = message;
+function addMessage(text, sender) {
+  const messageElement = document.createElement('div');
+  messageElement.className = `${sender}-message`;
+  messageElement.textContent = text;
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
 
-// Change or add categories here
-const categories = ["Help", "FAQ", "Support", "Contact"];
-categories.forEach((category) => {
-  const button = document.createElement("button");
-  button.className = "category-button";
-  button.innerText = category;
-  button.onclick = () => alert(`Category: ${category}`);
-  categoryContainer.appendChild(button);
-});
+// Show popup message
+function showPopup() {
+  if (chatContainer.style.display === "none") {
+    popupMessage.style.display = "block";
+    setTimeout(() => {
+      popupMessage.style.display = "none";
+    }, Math.random() * (10000 - 7000) + 7000); // Popup visible for 7-10 seconds
+  }
+}
 
 function startPopupTimer() {
   setInterval(() => {
     showPopup();
-  }, Math.random() * (40000 - 30000) + 30000); // Popup appears after random time between 30s and 40s
+  }, Math.random() * (40000 - 30000) + 30000); // Popup every 30-40 seconds
 }
 
-startPopupTimer(); // Correct function call
-
-// Load FAQ data and categories
-fetch('faqData.json')
-  .then(response => response.json())
-  .then(data => {
-    faqData = data.faqs;
-    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
-  })
-  .catch(error => console.error('Error loading FAQ data:', error));
-
-fetch('categories.json')
-  .then(response => response.json())
-  .then(data => {
-    categories = data.categories;
-    loadCategories();
-  })
-  .catch(error => console.error('Error loading categories:', error));
-
-// Add message to chatbox
-function addMessage(text, sender) {
-  // Dim only previous messages of the same type (bot or user)
-  const otherSender = sender === 'user' ? 'bot' : 'user';
-  const messages = document.querySelectorAll(`.${otherSender}-message`);
-  
-  messages.forEach(message => message.classList.add('dim'));
-  
-  // Create new message
-  const message = document.createElement('div');
-  message.className = `message ${sender}-message`;
-  message.textContent = text;
-  chatBox.appendChild(message);
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
-}
+startPopupTimer(); // Start popup timer
 
 // Load categories and display buttons
 function loadCategories() {
-  const categoryContainer = document.getElementById('categoryContainer');
+  categoryContainer.innerHTML = ''; // Clear any existing buttons
   categories.forEach(category => {
     const button = document.createElement('button');
     button.className = 'category-button';
@@ -123,12 +89,22 @@ function toggleCategory(category) {
   }
 }
 
-// Send message when user presses enter
-document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    sendMessage();
-  }
-});
+// Load FAQ data and categories
+fetch('faqData.json')
+  .then(response => response.json())
+  .then(data => {
+    faqData = data.faqs;
+    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
+  })
+  .catch(error => console.error('Error loading FAQ data:', error));
+
+fetch('categories.json')
+  .then(response => response.json())
+  .then(data => {
+    categories = data.categories;
+    loadCategories();
+  })
+  .catch(error => console.error('Error loading categories:', error));
 
 // Handle user input and bot response
 function sendMessage() {
@@ -148,6 +124,13 @@ function sendMessage() {
   addMessage(response, 'bot');
   document.getElementById('userInput').value = '';
 }
+
+// Send message when user presses enter
+document.getElementById('userInput').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
 
 // Ensure chat is hidden on page load
 document.addEventListener('DOMContentLoaded', () => {
