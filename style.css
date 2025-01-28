@@ -37,7 +37,7 @@
   right: 390px; /* Place to the left of the chat container */
   width: 120px; /* Adjust width to fit buttons */
   gap: 10px;
-  max-height: calc(100% - 20px); /* Limit height to the chat box's height */
+  max-height: 80%; /* Limit height to the chat box's height */
   overflow-y: auto; /* Allow vertical scrolling */
   background-color: #f1f1f1; /* Light background color for visibility */
   border-radius: 10px;
