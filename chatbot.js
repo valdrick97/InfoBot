@@ -4,6 +4,7 @@ const chatBox = document.getElementById('chatBox');
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
+let popupTimeout;
 
 // Toggle chat visibility
 function toggleChat() {
@@ -14,8 +15,18 @@ function toggleChat() {
   } else {
     chatContainer.style.display = "none";
     popupMessage.style.display = "block"; // Show the popup when chat is closed
+    setTimeout(() => {
+      popupMessage.style.display = "none";
+    }  Math.random() * (10000 - 7000) + 7000);
   }
 }
+
+funtion startPopupTimer() {
+  setInterval(() => {
+    showPopup();
+  }, Math.random() * (40000 - 30000) + 300000);
+}
+start PopupTimer();
 
 // Load FAQ data and categories
 fetch('faqData.json')
