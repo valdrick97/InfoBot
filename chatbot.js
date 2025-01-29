@@ -45,6 +45,11 @@ function isChatContainerEmpty() {
   return chatBox.children.length === 0;
 }
 
+// Function to check if the chat container is empty
+function isChatContainerEmpty() {
+  return chatBox.children.length === 0;
+}
+
 // Show the initial bot greeting only once, and only if the chat container is empty
 function displayGreetingIfEmpty() {
   if (!isChatInitialized && isChatContainerEmpty()) {
@@ -59,8 +64,8 @@ function addMessage(text, sender) {
   message.textContent = text;
   message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
   chatBox.appendChild(message);
-
-  // Only show the greeting message once if the chat is empty initially
+  
+  // Only show the greeting message if it hasn't been shown before
   if (!isChatInitialized) {
     displayGreetingIfEmpty(); // Show greeting only if it hasn't been shown
   }
@@ -68,7 +73,6 @@ function addMessage(text, sender) {
 
 // Example: Adding a user message
 addMessage("Hello, I need help with my account.", "user"); // User message
-
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
