@@ -113,14 +113,9 @@ function resetInactivityTimer() {
 // Handle user input and bot response
 function sendMessage() {
   const userInput = document.getElementById('userInput').value.trim();
+
   if (!userInput) {
     addMessage("Please enter a question.", 'bot');
-    return;
-  }
-
-   if (!userInput && !isPromptDisplayed) {
-    addMessage("Please enter a question.", 'bot');
-    isPromptDisplayed = true; // Set the flag to true to prevent showing it again
     return;
   }
   
