@@ -10,6 +10,7 @@ let popupInterval;
 let isChatInitialized = false;
 let inactivityTimer;  // Timer for inactivity
 let isInactivityPromptShown = false; // Flag to prevent repeated inactivity prompts
+let isPromptDisplayed = false; // Flag to track if the prompt is shown
 
 // Disable category buttons (keeping them in code for future use)
 function disableCategoryButtons() {
@@ -116,10 +117,21 @@ function sendMessage() {
     addMessage("Please enter a question.", 'bot');
     return;
   }
+
+   if (!userInput && !isPromptDisplayed) {
+    addMessage("Please enter a question.", 'bot');
+    isPromptDisplayed = true; // Set the flag to true to prevent showing it again
+    return;
+  }
   
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
     return;
+  }
+
+  // Reset flag if the user enters valid input
+  if (userInput) {
+    isPromptDisplayed = false; // Reset when user enters a valid message
   }
 
   addMessage(userInput, 'user');
