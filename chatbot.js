@@ -113,11 +113,6 @@ function resetInactivityTimer() {
 // Handle user input and bot response
 function sendMessage() {
   const userInput = document.getElementById('userInput').value.trim();
-
-  if (!userInput) {
-    addMessage("Please enter a question.", 'bot');
-    return;
-  }
   
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
