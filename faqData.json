@@ -125,6 +125,10 @@
       "answer": "I can’t play games in the traditional sense, but I can tell you fun facts, quizzes, or brain teasers!"
     },
     {
+      "question": "Hi?",
+      "answer": "Hi! How can I help you today?"
+    },
+    {
       "question": "Can you tell me a riddle?",
       "answer": "Sure! What has keys but can't open locks? A piano!"
     },
