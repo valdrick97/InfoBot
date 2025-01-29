@@ -128,7 +128,7 @@ function sendMessage() {
   let bestMatch = fuzzySet.get(userInput);
   let response = "I'm sorry, I don't understand that question.";
 
-  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.5) {
+  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
     let matchedQuestion = bestMatch[0][1];
     let faq = faqData.find(f => f.question === matchedQuestion);
     response = faq ? faq.answer : response;
