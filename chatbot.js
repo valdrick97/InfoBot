@@ -133,7 +133,7 @@ function sendMessage() {
     let faq = faqData.find(f => f.question === matchedQuestion);
     response = faq ? faq.answer : response;
   } else {
-    response = "I couldn't find a matching answer. Can you rephrase your question?";
+    response = "I'm not sure I know that answer. Can you rephrase your question?";
   }
 
   addMessage(response, 'bot');
