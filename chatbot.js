@@ -39,9 +39,10 @@ function toggleChat() {
     chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
     // Hide the icon after the animation
-    setTimeout(() => {
-      chatbotButton.classList.remove('open');
-    }, 500); // Adjust this time according to the animation duration
+setTimeout(() => {
+  chatbotButton.classList.remove('open');
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+}, 500); // Adjust this time according to the animation duration
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
@@ -82,6 +83,7 @@ function addMessage(text, sender) {
   message.textContent = text;
   message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
   chatBox.appendChild(message);
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
   
   // Only show the greeting message if it hasn't been shown before
   if (!isChatInitialized) {
