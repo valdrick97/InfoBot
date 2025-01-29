@@ -41,11 +41,37 @@ function toggleChat() {
       chatbotButton.classList.remove('open');
     }, 500); // Adjust this time according to the animation duration
 
-    // Show the initial bot greeting only once
-    if (!isChatInitialized) {
-      addMessage("What can I help you with?", "bot"); // Send bot greeting
-      isChatInitialized = true;
-    }
+   // Assuming isChatInitialized is already declared and false initially
+let isChatInitialized = false;
+
+// Function to check if the chat container is empty
+function isChatContainerEmpty() {
+  return chatBox.children.length === 0;
+}
+
+// Show the initial bot greeting only once, and only if the chat container is empty
+function displayGreetingIfEmpty() {
+  if (!isChatInitialized && isChatContainerEmpty()) {
+    addMessage("What can I help you with?", "bot");
+    isChatInitialized = true;
+  }
+}
+
+// Add a message to the chat box
+function addMessage(text, sender) {
+  const message = document.createElement('div');
+  message.textContent = text;
+  message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+  chatBox.appendChild(message);
+  
+  // Display the greeting if the chat is empty after adding a message
+  displayGreetingIfEmpty();
+}
+
+// You can use addMessage to add both user and bot messages
+// For example, when a user sends a message:
+addMessage("Hello, I need help with my account.", "user"); // User message
+
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
