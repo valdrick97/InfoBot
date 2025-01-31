@@ -96,7 +96,7 @@ function addMessage(text, sender) {
 }
 
 // Example: Adding a user message
-addMessage("Hello, I need help with my account.", "user"); // User message
+//addMessage("Hello, I need help with my account.", "user"); // User message
 
 // Inactivity Timer
 function resetInactivityTimer() {
