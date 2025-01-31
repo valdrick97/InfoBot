@@ -135,7 +135,7 @@ function sendMessage() {
 
   if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
     let matchedQuestion = bestMatch[0][1];
-    let faq = faqData.find(f => f.question === matchedQuestion);
+    let faq = faqData.find(f => normalize(f.question) === matchedQuestionNormalized);
     response = faq ? faq.answer : response;
   } else {
     response = "I'm not sure I know that answer. Can you rephrase your question?";
@@ -143,7 +143,15 @@ function sendMessage() {
 
   addMessage(response, 'bot');
   document.getElementById('userInput').value = '';
-}
+  }
+
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
+      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
+      .trim();
+  }
 
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
@@ -223,6 +231,7 @@ fetch('faqData.json')
   .then(data => {
     faqData = data.faqs;
     fuzzySet = FuzzySet(faqData.map(faq => faq.question));
+    fuzzySet = FuzzySet(faqData.map(faq => normalize(faq.question)));
   })
   .catch(error => {
     console.error('Error loading FAQ data:', error);
