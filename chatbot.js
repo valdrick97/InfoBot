@@ -133,12 +133,12 @@ function sendMessage() {
   let bestMatch = fuzzySet.get(userInput);
   let response = "I'm sorry, I don't understand that question.";
 
-  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-    let faq = faqData.find(f => normalize(f.question) === matchedQuestionNormalized);
-    response = faq ? faq.answer : response;
-  } else {
-    response = "I'm not sure I know that answer. Can you rephrase your question?";
-  }
+  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.5) {
+  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
+  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
+} else {
+  response = "I couldn't find a matching answer. Can you rephrase your question?";
+}
 
   addMessage(response, 'bot');
   document.getElementById('userInput').value = '';
