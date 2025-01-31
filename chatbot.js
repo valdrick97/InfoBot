@@ -134,7 +134,6 @@ function sendMessage() {
   let response = "I'm sorry, I don't understand that question.";
 
   if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-    let matchedQuestion = bestMatch[0][1];
     let faq = faqData.find(f => normalize(f.question) === matchedQuestionNormalized);
     response = faq ? faq.answer : response;
   } else {
