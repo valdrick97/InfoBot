@@ -246,7 +246,7 @@ fetch('faqData.json')
   });
 
 function submitToGoogleForm(userInput) {
-    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse";
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/viewform?usp=pp_url";
     
     // Extract Employee ID and Confirmation Number using regex
     const match = userInput.match(/^(\S+)\s+(\d{5})$/);
