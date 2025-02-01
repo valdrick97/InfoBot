@@ -40,10 +40,10 @@ function toggleChat() {
     chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
     // Hide the icon after the animation
-setTimeout(() => {
-  chatbotButton.classList.remove('open');
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-}, 500); // Adjust this time according to the animation duration
+    setTimeout(() => {
+      chatbotButton.classList.remove('open');
+      chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+    }, 500); // Adjust this time according to the animation duration
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
@@ -95,9 +95,6 @@ function addMessage(text, sender) {
   resetInactivityTimer();
 }
 
-// Example: Adding a user message
-//addMessage("Hello, I need help with my account.", "user"); // User message
-
 // Inactivity Timer
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer); // Clear previous timer
@@ -134,23 +131,23 @@ function sendMessage() {
   let response = "I'm sorry, I don't understand that question.";
 
   if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
-  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
-} else {
-  response = "I couldn't find a matching answer. Can you rephrase your question?";
-}
+    let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
+    response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
+  } else {
+    response = "I couldn't find a matching answer. Can you rephrase your question?";
+  }
 
   addMessage(response, 'bot');
   document.getElementById('userInput').value = '';
-  }
+}
 
-  function normalize(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
-      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
-      .trim();
-  }
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]|_/g, "")  // Remove punctuation
+    .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
+    .trim();
+}
 
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
@@ -221,67 +218,10 @@ function handleInactivityResponse(response) {
 
 // Listen for yes/no responses to the inactivity prompt
 document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = document.getElementById('userInput').value.trim();
-    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
-      handleInactivityResponse(userInput);
-    }
-  }
-});
+  const userResponse = this.value.trim();
 
-// Fetch FAQ data and categories
-fetch('faqData.json')
-  .then(response => {
-    if (!response.ok) throw new Error('Failed to load FAQ data');
-    return response.json();
-  })
-  .then(data => {
-    faqData = data.faqs;
-    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
-    fuzzySet = FuzzySet(faqData.map(faq => normalize(faq.question)));
-  })
-  .catch(error => {
-    console.error('Error loading FAQ data:', error);
-    addMessage("Sorry, I'm having trouble loading my knowledge base. Please try again later.", 'bot');
-  });
-
-function submitToGoogleForm(userInput) {
-  const [employeeId, confirmationNumber] = userInput.split(' ');
-
-  // Prepare the data to be submitted to the Google Form
-  const formData = new FormData();
-  formData.append('entry.571940493', employeeId); // Employee ID field
-  formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
-
-  // Submit the data using fetch
-  fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (response.ok) {
-      // Add confirmation message with the submitted details
-      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
-    } else {
-      addMessage("There was an issue submitting your information. Please try again.", "bot");
-    }
-  })
-  .catch(error => {
-    console.error('Network error:', error);
-    addMessage("There was an error submitting your information. Please try again later.", "bot");
-  });
-}
-
-// Listen for the "Enter" key press
-document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = this.value.trim();
-    if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
-      submitToGoogleForm(userInput); // Submit form data
-      this.value = ""; // Clear input after submission
-      // No need to add user input again in the chat
-    } else {
-      addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
-    }
+  if (isInactivityPromptShown && (userResponse.toLowerCase() === 'yes' || userResponse.toLowerCase() === 'no')) {
+    handleInactivityResponse(userResponse);
+    this.value = ''; // Clear input field after response
   }
 });
