@@ -139,7 +139,7 @@ function sendMessage() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userInput }),
-  })
+  }
   .then(response => response.json())
   .then(data => {
     let response = data.response || "I'm sorry, I don't understand that question.";
