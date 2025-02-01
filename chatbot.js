@@ -40,10 +40,10 @@ function toggleChat() {
     chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
     // Hide the icon after the animation
-setTimeout(() => {
-  chatbotButton.classList.remove('open');
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-}, 500); // Adjust this time according to the animation duration
+    setTimeout(() => {
+      chatbotButton.classList.remove('open');
+      chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+    }, 500); // Adjust this time according to the animation duration
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
@@ -111,58 +111,77 @@ function resetInactivityTimer() {
 }
 
 // Handle user input and bot response
-function sendMessage() {
-  const userInput = document.getElementById('userInput').value.trim();
-
+function sendMessage(userInput) {
   // Prevent sending an empty message
   if (!userInput) {
     return; // Do nothing if the input is empty
   }
-  
+
+  // Check for message length
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
     return;
   }
 
-  // Reset flag if the user enters valid input
-  if (userInput) {
-    isPromptDisplayed = false; // Reset when user enters a valid message
-  }
-
+  // Add user message to chat box
   addMessage(userInput, 'user');
+
   let bestMatch = fuzzySet.get(userInput);
   let response = "I'm sorry, I don't understand that question.";
 
   if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
-  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
-} else {
-  response = "I couldn't find a matching answer. Can you rephrase your question?";
+    let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]);
+    response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
+  }
+
+  // Add the bot's response
+  addMessage(response, 'bot');
+  document.getElementById('userInput').value = ''; // Clear input after message
 }
 
-  addMessage(response, 'bot');
-  document.getElementById('userInput').value = '';
-  }
+// Ensure the confirmation codes are submitted correctly
+function submitToGoogleForm(userInput) {
+  const [employeeId, confirmationNumber] = userInput.split(' ');
 
-  function normalize(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
-      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
-      .trim();
-  }
+  // Prepare the data to be submitted to the Google Form
+  const formData = new FormData();
+  formData.append('entry.571940493', employeeId); // Employee ID field
+  formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
 
-// Send message when user presses enter
+  // Prevent the bot from sending a message during the form submission
+  addMessage("Submitting your information...", "bot");
+
+  // Submit the data using fetch
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      // Add confirmation message with the submitted details
+      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
+    } else {
+      addMessage("There was an issue submitting your information. Please try again.", "bot");
+    }
+  })
+  .catch(error => {
+    console.error('Network error:', error);
+    addMessage("There was an error submitting your information. Please try again later.", "bot");
+  });
+}
+
+// Listen for "Enter" key press and handle user input
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     const userInput = this.value.trim();
-    
-    // Check if the input matches "EmployeeID 12345" format
+
+    // Check if the input contains both Employee ID and Confirmation Number
     if (/^\S+\s+\d{5}$/.test(userInput)) {
-      submitToGoogleForm(userInput); // Submit form if input is valid
+      // Submit form if input is valid
+      submitToGoogleForm(userInput); 
       this.value = ""; // Clear input field
     } else {
-      sendMessage(); // Otherwise, process as a normal chatbot message
+      sendMessage(userInput); // Otherwise, process as a normal chatbot message
     }
   }
 });
@@ -244,44 +263,3 @@ fetch('faqData.json')
     console.error('Error loading FAQ data:', error);
     addMessage("Sorry, I'm having trouble loading my knowledge base. Please try again later.", 'bot');
   });
-
-function submitToGoogleForm(userInput) {
-  const [employeeId, confirmationNumber] = userInput.split(' ');
-
-  // Prepare the data to be submitted to the Google Form
-  const formData = new FormData();
-  formData.append('entry.571940493', employeeId); // Employee ID field
-  formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
-
-  // Submit the data using fetch
-  fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (response.ok) {
-      // Add confirmation message with the submitted details
-      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
-    } else {
-      addMessage("There was an issue submitting your information. Please try again.", "bot");
-    }
-  })
-  .catch(error => {
-    console.error('Network error:', error);
-    addMessage("There was an error submitting your information. Please try again later.", "bot");
-  });
-}
-
-// Listen for the "Enter" key press
-document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = this.value.trim();
-    if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
-      submitToGoogleForm(userInput); // Submit form data
-      this.value = ""; // Clear input after submission
-      // No need to add user input again in the chat
-    } else {
-      addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
-    }
-  }
-});
