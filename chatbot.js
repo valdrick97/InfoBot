@@ -1,77 +1,80 @@
 const chatContainer = document.getElementById('chatContainer');
 const popupMessage = document.getElementById('popupMessage');
 const chatBox = document.getElementById('chatBox');
-const chatbotButton = document.getElementById('chatbotButton'); // Fix for missing chatbotButton
-
+// const categoryContainer = document.getElementById('categoryContainer');
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
 let popupTimeout;
 let popupInterval;
 let isChatInitialized = false;
-let inactivityTimer;
-let isInactivityPromptShown = false;
-let isPromptDisplayed = false;
+let inactivityTimer;  // Timer for inactivity
+let isInactivityPromptShown = false; // Flag to prevent repeated inactivity prompts
+let isPromptDisplayed = false; // Flag to track if the prompt is shown
 
 // Disable category buttons (keeping them in code for future use)
 function disableCategoryButtons() {
   const buttons = document.querySelectorAll('.category-button');
   buttons.forEach(button => {
-    button.disabled = true;
-    button.style.pointerEvents = 'none';
-    button.style.opacity = '0.5';
+    button.disabled = true; // Disable the buttons
+    button.style.pointerEvents = 'none'; // Prevent interaction (optional, but good for visual clarity)
+    button.style.opacity = '0.5'; // Make the buttons look disabled (optional)
   });
 }
 
 // Ensure chat is hidden on page load
 document.addEventListener('DOMContentLoaded', () => {
-  chatContainer.style.display = "none";
-  popupMessage.style.display = "block";
-  disableCategoryButtons();
-  loadChatHistory();
+  chatContainer.style.display = "none"; // Ensure chat is hidden
+  popupMessage.style.display = "block"; // Show the popup message
+  disableCategoryButtons(); // Disable the category buttons on page load
+  loadChatHistory(); // Load chat history if available
 });
 
 // Toggle chat visibility
 function toggleChat() {
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-    chatContainer.style.display = "flex";
-    chatbotButton.classList.add('open');
-    chatbotButton.classList.remove('close');
-    chatContainer.classList.add('open');
+    // Open chat
+    chatContainer.style.display = "flex"; // Show chat container
+    chatbotButton.classList.add('open'); // Trigger the "open" animation for the icon
+    chatbotButton.classList.remove('close'); // Remove "close" animation if chat is opening
+    chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
-    setTimeout(() => {
-      chatbotButton.classList.remove('open');
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }, 500);
+    // Hide the icon after the animation
+setTimeout(() => {
+  chatbotButton.classList.remove('open');
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+}, 500); // Adjust this time according to the animation duration
 
-    popupMessage.style.display = "none";
+    popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
-    chatbotButton.classList.add('close');
-    chatbotButton.classList.remove('open');
-    chatContainer.classList.remove('open');
+    // Close chat
+    chatbotButton.classList.add('close'); // Trigger the "close" animation for the icon
+    chatbotButton.classList.remove('open'); // Remove "open" animation if chat is closing
+    chatContainer.classList.remove('open'); // Close the chat container
 
+    // Hide chat container after the animation
     setTimeout(() => {
-      chatContainer.style.display = "none";
-      chatbotButton.classList.remove('close');
-    }, 500);
+      chatContainer.style.display = "none"; // Hide chat container after animation
+      chatbotButton.classList.remove('close'); // Remove "close" animation after it's finished
+    }, 500); // Adjust this time according to the animation duration
 
-    popupMessage.style.display = "block";
+    popupMessage.style.display = "block"; // Show the popup when chat is closed
     setTimeout(() => {
-      popupMessage.style.display = "none";
-    }, Math.random() * (10000 - 7000) + 7000);
+      popupMessage.style.display = "none"; // Hide the popup message after random time
+    }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time
   }
 }
 
-// Check if chat container is empty
+// Function to check if the chat container is empty
 function isChatContainerEmpty() {
   return chatBox.children.length === 0;
 }
 
-// Show initial bot greeting if empty
+// Show the initial bot greeting only once, and only if the chat container is empty
 function displayGreetingIfEmpty() {
   if (!isChatInitialized && isChatContainerEmpty()) {
     addMessage("What can I help you with?", "bot");
-    isChatInitialized = true;
+    isChatInitialized = true;  // Prevent this greeting from showing again
   }
 }
 
@@ -81,19 +84,25 @@ function addMessage(text, sender) {
   message.textContent = text;
   message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
   chatBox.appendChild(message);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+  
+  // Only show the greeting message if it hasn't been shown before
   if (!isChatInitialized) {
-    displayGreetingIfEmpty();
+    displayGreetingIfEmpty(); // Show greeting only if it hasn't been shown
   }
 
+  // Reset inactivity timer whenever a new message is added
   resetInactivityTimer();
 }
 
+// Example: Adding a user message
+//addMessage("Hello, I need help with my account.", "user"); // User message
+
 // Inactivity Timer
 function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
+  clearTimeout(inactivityTimer); // Clear previous timer
   inactivityTimer = setTimeout(() => {
+    // Show inactivity prompt after 10 minutes of no typing
     if (!isInactivityPromptShown) {
       addMessage("Would you like to clear all messages in this chat and start fresh? Yes or No.", "bot");
       isInactivityPromptShown = true;
@@ -101,107 +110,98 @@ function resetInactivityTimer() {
   }, 10 * 60 * 1000); // 10 minutes
 }
 
-// Normalize text for better matching
-function normalize(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s]|_/g, "")  
-    .replace(/\s+/g, " ")       
-    .trim();
-}
-
-let isProcessingMessage = false; // Flag to prevent duplicate message submissions
-
 // Handle user input and bot response
 function sendMessage() {
-  if (isProcessingMessage) return; // If a message is already being processed, don't send another one
-  isProcessingMessage = true; // Mark the start of message processing
-  
   const userInput = document.getElementById('userInput').value.trim();
 
   // Prevent sending an empty message
   if (!userInput) {
-    isProcessingMessage = false; // Reset flag
     return; // Do nothing if the input is empty
   }
-
+  
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
-    isProcessingMessage = false; // Reset flag if input is too long
     return;
   }
 
-  isPromptDisplayed = false;
-  addMessage(userInput, 'user'); // Display user message
+  // Reset flag if the user enters valid input
+  if (userInput) {
+    isPromptDisplayed = false; // Reset when user enters a valid message
+  }
 
-  // Make sure the fetch request is correctly structured
- fetch('https://info-cw5n1yjqy-valdrick97s-projects.vercel.app/', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ message: userInput }),
-})
-.then(response => response.json())
-.then(data => {
-  let response = data.response || "I'm sorry, I don't understand that question.";
-  addMessage(response, 'bot');
-})
-.catch(error => {
-  console.error('Error:', error);
-  addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
-})
-  .finally(() => {
-    isProcessingMessage = false; // Reset the flag after processing is complete
-    document.getElementById('userInput').value = ''; // Clear input field
-  });
+  addMessage(userInput, 'user');
+  let bestMatch = fuzzySet.get(userInput);
+  let response = "I'm sorry, I don't understand that question.";
+
+  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
+  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
+  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
+} else {
+  response = "I couldn't find a matching answer. Can you rephrase your question?";
 }
 
-// Unified keypress listener for Enter key
+  addMessage(response, 'bot');
+  document.getElementById('userInput').value = '';
+  }
+
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
+      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
+      .trim();
+  }
+
+// Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
-    const userInput = this.value.trim();
-
-    // Handle inactivity prompt response
-    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
-      handleInactivityResponse(userInput);
-    } else {
-      sendMessage();
-    }
+    sendMessage();
   }
 });
-
 
 // Save chat history to localStorage with a timestamp
 function saveChatHistory() {
   const chatMessages = Array.from(chatBox.children).map(el => ({
     text: el.textContent,
     sender: el.classList.contains('user-message') ? 'user' : 'bot',
-    timestamp: Date.now()
+    timestamp: Date.now() // Add a timestamp when the message is saved
   }));
   localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
 }
 
-// Load chat history and filter expired messages
+// Load chat history from localStorage and filter out expired messages
 function loadChatHistory() {
-  const EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours (in milliseconds)
   const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
   
-  const validChatHistory = chatHistory.filter(msg => Date.now() - msg.timestamp < EXPIRATION_TIME);
+  const validChatHistory = chatHistory.filter(msg => {
+    // Check if the message is still within the expiration time
+    return Date.now() - msg.timestamp < EXPIRATION_TIME;
+  });
 
+  // Load only valid messages
   validChatHistory.forEach(msg => addMessage(msg.text, msg.sender));
   
+  // Save the filtered history back to localStorage
   localStorage.setItem('chatHistory', JSON.stringify(validChatHistory));
 }
 
-// Clear chat history
-function clearChatHistory() {
-  chatBox.innerHTML = '';
-  saveChatHistory();
-  isInactivityPromptShown = false;
+// Optional: Clear chat history after a set duration
+function clearChatHistoryAfterTime() {
+  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours
+  setTimeout(() => {
+    localStorage.removeItem('chatHistory'); // Remove chat history after the set time
+  }, EXPIRATION_TIME);
 }
 
-// Handle user response to inactivity prompt
+// Clear chat history based on user response to inactivity prompt
+function clearChatHistory() {
+  chatBox.innerHTML = ''; // Clear chat box
+  saveChatHistory(); // Save cleared history
+  isInactivityPromptShown = false; // Reset inactivity prompt flag
+}
+
+// Handle user response to inactivity prompt (yes or no)
 function handleInactivityResponse(response) {
   if (response.toLowerCase() === 'yes') {
     clearChatHistory();
@@ -211,6 +211,16 @@ function handleInactivityResponse(response) {
   }
 }
 
+// Listen for yes/no responses to the inactivity prompt
+document.getElementById('userInput').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    const userInput = document.getElementById('userInput').value.trim();
+    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
+      handleInactivityResponse(userInput);
+    }
+  }
+});
+
 // Fetch FAQ data and categories
 fetch('faqData.json')
   .then(response => {
@@ -219,6 +229,7 @@ fetch('faqData.json')
   })
   .then(data => {
     faqData = data.faqs;
+    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
     fuzzySet = FuzzySet(faqData.map(faq => normalize(faq.question)));
   })
   .catch(error => {
