@@ -110,21 +110,32 @@ function normalize(text) {
     .trim();
 }
 
+let isProcessingMessage = false; // Flag to prevent duplicate message submissions
+
 // Handle user input and bot response
 function sendMessage() {
-  const userInputElement = document.getElementById('userInput');
-  const userInput = userInputElement.value.trim();
+  if (isProcessingMessage) return; // If a message is already being processed, don't send another one
+  isProcessingMessage = true; // Mark the start of message processing
+  
+  const userInput = document.getElementById('userInput').value.trim();
 
-  if (!userInput) return;
+  // Prevent sending an empty message
+  if (!userInput) {
+    isProcessingMessage = false; // Reset flag
+    return; // Do nothing if the input is empty
+  }
+
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
+    isProcessingMessage = false; // Reset flag if input is too long
     return;
   }
 
   isPromptDisplayed = false;
-  addMessage(userInput, 'user');
+  addMessage(userInput, 'user'); // Display user message
 
-  fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat'), { 
+  // Make sure the fetch request is correctly structured
+  fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userInput }),
@@ -139,7 +150,8 @@ function sendMessage() {
     addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
   })
   .finally(() => {
-    userInputElement.value = ''; // Ensure input is cleared
+    isProcessingMessage = false; // Reset the flag after processing is complete
+    document.getElementById('userInput').value = ''; // Clear input field
   });
 }
 
@@ -147,7 +159,8 @@ function sendMessage() {
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     const userInput = this.value.trim();
-    
+
+    // Handle inactivity prompt response
     if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
       handleInactivityResponse(userInput);
     } else {
@@ -155,6 +168,7 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
     }
   }
 });
+
 
 // Save chat history to localStorage with a timestamp
 function saveChatHistory() {
