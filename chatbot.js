@@ -135,7 +135,7 @@ function sendMessage() {
   addMessage(userInput, 'user'); // Display user message
 
   // Make sure the fetch request is correctly structured
- fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat', {
+ fetch('https://info-cw5n1yjqy-valdrick97s-projects.vercel.app/', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
