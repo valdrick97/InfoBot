@@ -1,11 +1,15 @@
 const express = require('express');
 const app = express();
 
-// Allow requests from specific origin (your frontend URL)
+// Enable CORS for your frontend domain
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://valdrick97.github.io'); // Add your frontend URL here
+  res.setHeader('Access-Control-Allow-Origin', 'https://valdrick97.github.io'); // Allow requests from your frontend URL
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST'); // Allow the necessary HTTP methods
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Allow specific headers
+  // Handle preflight requests (OPTIONS)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   next();
 });
 
