@@ -1,7 +1,7 @@
 const express = require('chatbot');
 const app = express();
 
-app.use(express.json());
+app.use(chatbot.json());
 
 app.post('/chat', (req, res) => {
   const userInput = req.body.message;
