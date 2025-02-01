@@ -285,5 +285,3 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
     }
   }
 });
-
-
