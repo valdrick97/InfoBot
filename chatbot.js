@@ -129,20 +129,23 @@ function sendMessage() {
     isPromptDisplayed = false; // Reset when user enters a valid message
   }
 
-  addMessage(userInput, 'user');
-  let bestMatch = fuzzySet.get(userInput);
-  let response = "I'm sorry, I don't understand that question.";
-
-  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
-  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
-} else {
-  response = "I couldn't find a matching answer. Can you rephrase your question?";
-}
-
-  addMessage(response, 'bot');
-  document.getElementById('userInput').value = '';
-  }
+  // Send user input to backend
+  fetch('https://your-chatbot.vercel.app/api/chat', { // Replace with your actual API URL
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ message: userInput }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    let response = data.response || "I'm sorry, I don't understand that question.";
+    addMessage(response, 'bot');
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
+  });
 
   function normalize(text) {
     return text
