@@ -260,14 +260,15 @@ function submitToGoogleForm(userInput) {
   })
   .then(response => {
     if (response.ok) {
-      addMessage("Your information has been successfully submitted!", "bot"); // Show success message
+      // Add confirmation message with the submitted details
+      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
     } else {
-      addMessage("There was an issue submitting your information. Please try again.", "bot"); // Show error message
+      addMessage("There was an issue submitting your information. Please try again.", "bot");
     }
   })
   .catch(error => {
     console.error('Network error:', error);
-    addMessage("There was an error submitting your information. Please try again later.", "bot"); // Show network error message
+    addMessage("There was an error submitting your information. Please try again later.", "bot");
   });
 }
 
@@ -278,13 +279,11 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
     if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
       submitToGoogleForm(userInput); // Submit form data
       this.value = ""; // Clear input after submission
-      // Avoid adding the user input again in the chat
-      setTimeout(() => {
-        addMessage("Your information has been successfully submitted!", "bot"); // Show success message after form submission
-      }, 500); // Delay message for a smoother experience
+      // No need to add user input again in the chat
     } else {
       addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
     }
   }
 });
+
 
