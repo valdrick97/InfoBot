@@ -273,3 +273,4 @@ function submitToGoogleForm(userInput) {
     console.error('Network error:', error);
     addMessage("There was an error submitting your information. Please try again later.", "bot");
   });
+}
