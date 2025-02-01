@@ -124,7 +124,7 @@ function sendMessage() {
   isPromptDisplayed = false;
   addMessage(userInput, 'user');
 
-  fetch('https://your-chatbot.vercel.app/api/chat', { // Replace with your actual API URL
+  fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat', { 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userInput }),
