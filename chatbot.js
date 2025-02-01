@@ -261,7 +261,7 @@ function submitToGoogleForm(userInput) {
   .then(response => {
     if (response.ok) {
       // Add confirmation message with the submitted details
-      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
+      addMessage(Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}, "bot"); 
     } else {
       addMessage("There was an issue submitting your information. Please try again.", "bot");
     }
