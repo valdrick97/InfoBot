@@ -1,23 +1,16 @@
 const express = require('express');
 const cors = require('cors');
+
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: 'https://valdrick97.github.io', // Your frontend domain
-  methods: 'GET,POST',
-  allowedHeaders: 'Content-Type',
-};
-
-app.use(cors(corsOptions)); // Apply CORS middleware
-
-app.use(express.json());
+// Enable CORS for all origins
+app.use(cors());
+app.use(express.json()); // Allow JSON requests
 
 app.post('/api/chat', (req, res) => {
   const userInput = req.body.message;
-  // Process user input and generate a response (your chatbot logic)
-  const response = "This is the bot's response to: " + userInput;
-  res.json({ response });
+  res.json({ response: "Bot response to: " + userInput });
 });
 
+// Export for Vercel
 module.exports = app;
