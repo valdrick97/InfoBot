@@ -246,34 +246,41 @@ fetch('faqData.json')
   });
 
 function submitToGoogleForm(userInput) {
-    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/viewform?usp=pp_url";
-    
-    // Extract Employee ID and Confirmation Number using regex
-    const match = userInput.match(/^(\S+)\s+(\d{5})$/);
-    
-    if (!match) {
-        addMessage("Please enter your Employee ID followed by a 5-digit confirmation number (e.g., EMP123 54321).", "bot");
-        return;
+  const [employeeId, confirmationNumber] = userInput.split(' ');
+
+  // Prepare the data to be submitted to the Google Form
+  const formData = new FormData();
+  formData.append('entry.571940493', employeeId); // Employee ID field
+  formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
+
+  // Submit the data using fetch
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      addMessage("Your information has been successfully submitted!", "bot"); // Show success message
+    } else {
+      addMessage("There was an issue submitting your information. Please try again.", "bot"); // Show error message
     }
-
-    const employeeID = match[1];  // First part (Employee ID)
-    const confirmationNumber = match[2];  // Second part (5-digit number)
-
-    // Create form data
-    const formData = new URLSearchParams();
-    formData.append("entry.1547131440", employeeID);  // Employee ID field
-    formData.append("entry.2133481200", confirmationNumber); // Confirmation Number field
-
-    // Send data to Google Form
-    fetch(formURL, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-    })
-    .then(() => {
-        addMessage("Your confirmation number has been submitted successfully!", "bot");
-    })
-    .catch(() => {
-        addMessage("There was an error submitting your confirmation number. Please try again later.", "bot");
-    });
+  })
+  .catch(error => {
+    console.error('Network error:', error);
+    addMessage("There was an error submitting your information. Please try again later.", "bot"); // Show network error message
+  });
 }
+
+// Listen for the "Enter" key press
+document.getElementById('userInput').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    const userInput = this.value.trim();
+    if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
+      submitToGoogleForm(userInput);
+      this.value = ""; // Clear input after submission
+      sendMessage(); // Handle sending message (if applicable)
+    } else {
+      addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
+    }
+  }
+});
