@@ -253,6 +253,9 @@ function submitToGoogleForm(userInput) {
   formData.append('entry.571940493', employeeId); // Employee ID field
   formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
 
+  // Prevent the bot from sending a message during the form submission
+  addMessage("Submitting your information...", "bot");
+
   // Submit the data using fetch
   fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
     method: 'POST',
@@ -261,7 +264,7 @@ function submitToGoogleForm(userInput) {
   .then(response => {
     if (response.ok) {
       // Add confirmation message with the submitted details
-      addMessage(Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}, "bot"); 
+      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
     } else {
       addMessage("There was an issue submitting your information. Please try again.", "bot");
     }
@@ -270,18 +273,3 @@ function submitToGoogleForm(userInput) {
     console.error('Network error:', error);
     addMessage("There was an error submitting your information. Please try again later.", "bot");
   });
-}
-
-// Listen for the "Enter" key press
-document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = this.value.trim();
-    if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
-      submitToGoogleForm(userInput); // Submit form data
-      this.value = ""; // Clear input after submission
-      // No need to add user input again in the chat
-    } else {
-      addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
-    }
-  }
-});
