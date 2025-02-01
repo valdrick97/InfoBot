@@ -156,11 +156,10 @@ function sendMessage() {
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     const userInput = this.value.trim();
-    
-    // Check if the input matches "EmployeeID 12345" format
-    if (/^\S+\s+\d{5}$/.test(userInput)) {
-      submitToGoogleForm(userInput); // Submit form if input is valid
-      this.value = ""; // Clear input field
+    if (/^\d{5}\s+\S+$/.test(userInput)) {  // Match format: "EmployeeID 12345"
+      submitToGoogleForm(userInput); // Submit form data
+      this.value = ""; // Clear input after submission
+      // No need to add user input again in the chat
     } else {
       sendMessage(); // Otherwise, process as a normal chatbot message
     }
