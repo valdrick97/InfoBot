@@ -135,20 +135,22 @@ function sendMessage() {
   addMessage(userInput, 'user'); // Display user message
 
   // Make sure the fetch request is correctly structured
-  fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: userInput }),
-  }
-  .then(response => response.json())
-  .then(data => {
-    let response = data.response || "I'm sorry, I don't understand that question.";
-    addMessage(response, 'bot');
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
-  })
+ fetch('https://info-g8u3bln54-valdrick97s-projects.vercel.app/api/chat', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ message: userInput }),
+})
+.then(response => response.json())
+.then(data => {
+  let response = data.response || "I'm sorry, I don't understand that question.";
+  addMessage(response, 'bot');
+})
+.catch(error => {
+  console.error('Error:', error);
+  addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
+})
   .finally(() => {
     isProcessingMessage = false; // Reset the flag after processing is complete
     document.getElementById('userInput').value = ''; // Clear input field
