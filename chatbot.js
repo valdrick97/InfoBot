@@ -276,11 +276,15 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     const userInput = this.value.trim();
     if (userInput.includes(' ')) { // Check if input includes space between Employee ID and Confirmation Number
-      submitToGoogleForm(userInput);
+      submitToGoogleForm(userInput); // Submit form data
       this.value = ""; // Clear input after submission
-      sendMessage(); // Handle sending message (if applicable)
+      // Avoid adding the user input again in the chat
+      setTimeout(() => {
+        addMessage("Your information has been successfully submitted!", "bot"); // Show success message after form submission
+      }, 500); // Delay message for a smoother experience
     } else {
       addMessage("Please enter both Employee ID and Confirmation Number.", "bot");
     }
   }
 });
+
