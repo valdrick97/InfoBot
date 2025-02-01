@@ -256,6 +256,7 @@ fetch('faqData.json')
   })
   .then(data => {
     faqData = data.faqs;
+    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
     fuzzySet = FuzzySet(faqData.map(faq => normalize(faq.question)));
   })
   .catch(error => {
