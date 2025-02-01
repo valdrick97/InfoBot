@@ -1,80 +1,77 @@
 const chatContainer = document.getElementById('chatContainer');
 const popupMessage = document.getElementById('popupMessage');
 const chatBox = document.getElementById('chatBox');
-// const categoryContainer = document.getElementById('categoryContainer');
+const chatbotButton = document.getElementById('chatbotButton'); // Fix for missing chatbotButton
+
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
 let popupTimeout;
 let popupInterval;
 let isChatInitialized = false;
-let inactivityTimer;  // Timer for inactivity
-let isInactivityPromptShown = false; // Flag to prevent repeated inactivity prompts
-let isPromptDisplayed = false; // Flag to track if the prompt is shown
+let inactivityTimer;
+let isInactivityPromptShown = false;
+let isPromptDisplayed = false;
 
 // Disable category buttons (keeping them in code for future use)
 function disableCategoryButtons() {
   const buttons = document.querySelectorAll('.category-button');
   buttons.forEach(button => {
-    button.disabled = true; // Disable the buttons
-    button.style.pointerEvents = 'none'; // Prevent interaction (optional, but good for visual clarity)
-    button.style.opacity = '0.5'; // Make the buttons look disabled (optional)
+    button.disabled = true;
+    button.style.pointerEvents = 'none';
+    button.style.opacity = '0.5';
   });
 }
 
 // Ensure chat is hidden on page load
 document.addEventListener('DOMContentLoaded', () => {
-  chatContainer.style.display = "none"; // Ensure chat is hidden
-  popupMessage.style.display = "block"; // Show the popup message
-  disableCategoryButtons(); // Disable the category buttons on page load
-  loadChatHistory(); // Load chat history if available
+  chatContainer.style.display = "none";
+  popupMessage.style.display = "block";
+  disableCategoryButtons();
+  loadChatHistory();
 });
 
 // Toggle chat visibility
 function toggleChat() {
   if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-    // Open chat
-    chatContainer.style.display = "flex"; // Show chat container
-    chatbotButton.classList.add('open'); // Trigger the "open" animation for the icon
-    chatbotButton.classList.remove('close'); // Remove "close" animation if chat is opening
-    chatContainer.classList.add('open'); // Trigger the opening animation for chat container
+    chatContainer.style.display = "flex";
+    chatbotButton.classList.add('open');
+    chatbotButton.classList.remove('close');
+    chatContainer.classList.add('open');
 
-    // Hide the icon after the animation
-setTimeout(() => {
-  chatbotButton.classList.remove('open');
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-}, 500); // Adjust this time according to the animation duration
+    setTimeout(() => {
+      chatbotButton.classList.remove('open');
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 500);
 
-    popupMessage.style.display = "none"; // Hide popup message when chat is open
+    popupMessage.style.display = "none";
   } else {
-    // Close chat
-    chatbotButton.classList.add('close'); // Trigger the "close" animation for the icon
-    chatbotButton.classList.remove('open'); // Remove "open" animation if chat is closing
-    chatContainer.classList.remove('open'); // Close the chat container
+    chatbotButton.classList.add('close');
+    chatbotButton.classList.remove('open');
+    chatContainer.classList.remove('open');
 
-    // Hide chat container after the animation
     setTimeout(() => {
-      chatContainer.style.display = "none"; // Hide chat container after animation
-      chatbotButton.classList.remove('close'); // Remove "close" animation after it's finished
-    }, 500); // Adjust this time according to the animation duration
+      chatContainer.style.display = "none";
+      chatbotButton.classList.remove('close');
+    }, 500);
 
-    popupMessage.style.display = "block"; // Show the popup when chat is closed
+    popupMessage.style.display = "block";
     setTimeout(() => {
-      popupMessage.style.display = "none"; // Hide the popup message after random time
-    }, Math.random() * (10000 - 7000) + 7000); // Popup disappears after random time
+      popupMessage.style.display = "none";
+    }, Math.random() * (10000 - 7000) + 7000);
   }
 }
 
-// Function to check if the chat container is empty
+// Check if chat container is empty
 function isChatContainerEmpty() {
   return chatBox.children.length === 0;
 }
 
-// Show the initial bot greeting only once, and only if the chat container is empty
+// Show initial bot greeting if empty
 function displayGreetingIfEmpty() {
   if (!isChatInitialized && isChatContainerEmpty()) {
     addMessage("What can I help you with?", "bot");
-    isChatInitialized = true;  // Prevent this greeting from showing again
+    isChatInitialized = true;
   }
 }
 
@@ -84,25 +81,19 @@ function addMessage(text, sender) {
   message.textContent = text;
   message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
   chatBox.appendChild(message);
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-  
-  // Only show the greeting message if it hasn't been shown before
+  chatBox.scrollTop = chatBox.scrollHeight;
+
   if (!isChatInitialized) {
-    displayGreetingIfEmpty(); // Show greeting only if it hasn't been shown
+    displayGreetingIfEmpty();
   }
 
-  // Reset inactivity timer whenever a new message is added
   resetInactivityTimer();
 }
 
-// Example: Adding a user message
-//addMessage("Hello, I need help with my account.", "user"); // User message
-
 // Inactivity Timer
 function resetInactivityTimer() {
-  clearTimeout(inactivityTimer); // Clear previous timer
+  clearTimeout(inactivityTimer);
   inactivityTimer = setTimeout(() => {
-    // Show inactivity prompt after 10 minutes of no typing
     if (!isInactivityPromptShown) {
       addMessage("Would you like to clear all messages in this chat and start fresh? Yes or No.", "bot");
       isInactivityPromptShown = true;
@@ -110,31 +101,32 @@ function resetInactivityTimer() {
   }, 10 * 60 * 1000); // 10 minutes
 }
 
+// Normalize text for better matching
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]|_/g, "")  
+    .replace(/\s+/g, " ")       
+    .trim();
+}
+
 // Handle user input and bot response
 function sendMessage() {
-  const userInput = document.getElementById('userInput').value.trim();
+  const userInputElement = document.getElementById('userInput');
+  const userInput = userInputElement.value.trim();
 
-  // Prevent sending an empty message
-  if (!userInput) {
-    return; // Do nothing if the input is empty
-  }
-  
+  if (!userInput) return;
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
     return;
   }
 
-  // Reset flag if the user enters valid input
-  if (userInput) {
-    isPromptDisplayed = false; // Reset when user enters a valid message
-  }
+  isPromptDisplayed = false;
+  addMessage(userInput, 'user');
 
-  // Send user input to backend
   fetch('https://your-chatbot.vercel.app/api/chat', { // Replace with your actual API URL
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userInput }),
   })
   .then(response => response.json())
@@ -145,20 +137,22 @@ function sendMessage() {
   .catch(error => {
     console.error('Error:', error);
     addMessage("I'm having trouble connecting right now. Please try again later.", 'bot');
+  })
+  .finally(() => {
+    userInputElement.value = ''; // Ensure input is cleared
   });
+}
 
-  function normalize(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
-      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
-      .trim();
-  }
-
-// Send message when user presses enter
+// Unified keypress listener for Enter key
 document.getElementById('userInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
-    sendMessage();
+    const userInput = this.value.trim();
+    
+    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
+      handleInactivityResponse(userInput);
+    } else {
+      sendMessage();
+    }
   }
 });
 
@@ -167,44 +161,31 @@ function saveChatHistory() {
   const chatMessages = Array.from(chatBox.children).map(el => ({
     text: el.textContent,
     sender: el.classList.contains('user-message') ? 'user' : 'bot',
-    timestamp: Date.now() // Add a timestamp when the message is saved
+    timestamp: Date.now()
   }));
   localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
 }
 
-// Load chat history from localStorage and filter out expired messages
+// Load chat history and filter expired messages
 function loadChatHistory() {
-  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours (in milliseconds)
+  const EXPIRATION_TIME = 24 * 60 * 60 * 1000;
   const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
   
-  const validChatHistory = chatHistory.filter(msg => {
-    // Check if the message is still within the expiration time
-    return Date.now() - msg.timestamp < EXPIRATION_TIME;
-  });
+  const validChatHistory = chatHistory.filter(msg => Date.now() - msg.timestamp < EXPIRATION_TIME);
 
-  // Load only valid messages
   validChatHistory.forEach(msg => addMessage(msg.text, msg.sender));
   
-  // Save the filtered history back to localStorage
   localStorage.setItem('chatHistory', JSON.stringify(validChatHistory));
 }
 
-// Optional: Clear chat history after a set duration
-function clearChatHistoryAfterTime() {
-  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours
-  setTimeout(() => {
-    localStorage.removeItem('chatHistory'); // Remove chat history after the set time
-  }, EXPIRATION_TIME);
-}
-
-// Clear chat history based on user response to inactivity prompt
+// Clear chat history
 function clearChatHistory() {
-  chatBox.innerHTML = ''; // Clear chat box
-  saveChatHistory(); // Save cleared history
-  isInactivityPromptShown = false; // Reset inactivity prompt flag
+  chatBox.innerHTML = '';
+  saveChatHistory();
+  isInactivityPromptShown = false;
 }
 
-// Handle user response to inactivity prompt (yes or no)
+// Handle user response to inactivity prompt
 function handleInactivityResponse(response) {
   if (response.toLowerCase() === 'yes') {
     clearChatHistory();
@@ -213,16 +194,6 @@ function handleInactivityResponse(response) {
     addMessage("Alright, continuing from where we left off.", "bot");
   }
 }
-
-// Listen for yes/no responses to the inactivity prompt
-document.getElementById('userInput').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = document.getElementById('userInput').value.trim();
-    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
-      handleInactivityResponse(userInput);
-    }
-  }
-});
 
 // Fetch FAQ data and categories
 fetch('faqData.json')
