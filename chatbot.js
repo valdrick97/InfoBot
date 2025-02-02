@@ -149,8 +149,6 @@ function sendMessage() {
   document.getElementById('userInput').value = ''; // Clear the input field
 }
 
-
-
   function normalize(text) {
     return text
       .toLowerCase()
