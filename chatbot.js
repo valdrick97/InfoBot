@@ -124,6 +124,9 @@ function sendMessage() {
     return;
   }
 
+  // Always show the user input
+  addMessage(userInput, 'user'); // Add user input to chat
+
   // Check if the input matches "EmployeeID ConfirmationNumber" format
   if (/^\d{5}\s+[A-Za-z0-9]+$/.test(userInput)) {
     submitToGoogleForm(userInput); // If valid, submit the form and skip FAQ matching
@@ -145,6 +148,7 @@ function sendMessage() {
   addMessage(response, 'bot');
   document.getElementById('userInput').value = ''; // Clear the input field
 }
+
 
 
   function normalize(text) {
