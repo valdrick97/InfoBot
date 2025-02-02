@@ -247,23 +247,20 @@ fetch('faqData.json')
 function submitToGoogleForm(userInput) {
   const [employeeId, confirmationNumber] = userInput.split(' ');
 
-  // Prepare the data to be submitted to the Google Form
   const formData = new FormData();
   formData.append('entry.571940493', employeeId); // Employee ID field
   formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
 
-  // Prevent the bot from sending a message during the form submission
   addMessage("Submitting your information...", "bot");
 
-  // Submit the data using fetch
-  fetch('https://docs.google.com/forms/d/e/1FAIpQLScE3LWodAQxUn739QNBsDGMaOPa7uQQI7JsDcsbqLVRbpgZ6g/formResponse', {
+  // Submit data to Google Apps Script URL
+  fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
     method: 'POST',
     body: formData
   })
   .then(response => {
     if (response.ok) {
-      // Add confirmation message with the submitted details
-      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot"); 
+      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot");
     } else {
       addMessage("There was an issue submitting your information. Please try again.", "bot");
     }
