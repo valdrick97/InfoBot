@@ -259,7 +259,7 @@ function submitToGoogleForm(userInput) {
   addMessage("Submitting your information...", "bot");
 
   // Submit data to Google Apps Script URL
-  fetch('https://script.google.com/macros/s/AKfycbxsnSc0PB7KviFfryDQMl0DBj8iEHe6-rgnbH0l8ZdZ2-OU952nhVn6QvIVpmCPb-YE/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbydb_c8oJxxE-sTgfxX46TKWDqRV7jqZ9A-YwkVM0k1MSoNGOAFMm9Y2iKfkEEpahURKA/exec', {
     method: 'POST',
     body: formData
   })
