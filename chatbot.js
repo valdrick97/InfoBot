@@ -254,7 +254,7 @@ function submitToGoogleForm(userInput) {
   addMessage("Submitting your information...", "bot");
 
   // Submit data to Google Apps Script URL
-  fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+  fetch('https://script.google.com/macros/s/AKfycbxsnSc0PB7KviFfryDQMl0DBj8iEHe6-rgnbH0l8ZdZ2-OU952nhVn6QvIVpmCPb-YE/exec', {
     method: 'POST',
     body: formData
   })
