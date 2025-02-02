@@ -118,31 +118,34 @@ function sendMessage() {
   if (!userInput) {
     return; // Do nothing if the input is empty
   }
-  
+
   if (userInput.length > 200) {
     addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
     return;
   }
 
-  // Reset flag if the user enters valid input
-  if (userInput) {
-    isPromptDisplayed = false; // Reset when user enters a valid message
+  // Check if the input matches "EmployeeID ConfirmationNumber" format
+  if (/^\d{5}\s+[A-Za-z0-9]+$/.test(userInput)) {
+    submitToGoogleForm(userInput); // If valid, submit the form and skip FAQ matching
+    document.getElementById('userInput').value = ''; // Clear the input field after submission
+    return; // Exit to avoid FAQ logic being processed
   }
 
-  addMessage(userInput, 'user');
+  // Process FAQ matching logic if the input isn't in the correct format
   let bestMatch = fuzzySet.get(userInput);
   let response = "I'm sorry, I don't understand that question.";
 
   if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-  let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
-  response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
-} else {
-  response = "I couldn't find a matching answer. Can you rephrase your question?";
-}
+    let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
+    response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
+  } else {
+    response = "I couldn't find a matching answer. Can you rephrase your question?";
+  }
 
   addMessage(response, 'bot');
-  document.getElementById('userInput').value = '';
-  }
+  document.getElementById('userInput').value = ''; // Clear the input field
+}
+
 
   function normalize(text) {
     return text
