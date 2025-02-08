@@ -234,7 +234,7 @@ document.getElementById('userInput').addEventListener('keypress', function (e) {
 });
 
 // Fetch FAQ data and categories
-fetch('faqData.json')
+fetch('https://raw.githubusercontent.com/valdrick97/InfoBot/main/faqData.json')
   .then(response => {
     if (!response.ok) throw new Error('Failed to load FAQ data');
     return response.json();
