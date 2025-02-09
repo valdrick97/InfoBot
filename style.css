@@ -30,7 +30,7 @@ body {
   
 /* Move and shrink the icon when chat box is opened */
 .bot-circle.move-to-right {
-  left: 80%;
+  left: 75%;
   transform: translateX(-100%) translateY(-50%);
 }
 
@@ -115,7 +115,7 @@ body {
   border: 1px solid #ccc;
 }
 
-input-container button {
+.input-container button {
   padding: 12px 20px;
   background-color: #007bff;
   color: white;
@@ -129,8 +129,7 @@ input-container button {
 .input-container button:hover {
   background-color: #0056b3;
 }
-
-/* Popup message 
+ 
 .popup-message {
   position: fixed;
   bottom: 20px;
@@ -140,5 +139,5 @@ input-container button {
   padding: 15px;
   border-radius: 50px;
   display: block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
 }
