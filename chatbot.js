@@ -1,7 +1,7 @@
 const chatContainer = document.getElementById('chatContainer');
 const popupMessage = document.getElementById('popupMessage');
 const chatBox = document.getElementById('chatBox');
-// const categoryContainer = document.getElementById('categoryContainer');
+const chatbotButton = document.getElementById('chatbotButton'); // Define chatbotButton
 let faqData = [];
 let fuzzySet = null;
 let categories = [];
@@ -40,10 +40,10 @@ function toggleChat() {
     chatContainer.classList.add('open'); // Trigger the opening animation for chat container
 
     // Hide the icon after the animation
-setTimeout(() => {
-  chatbotButton.classList.remove('open');
-  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-}, 500); // Adjust this time according to the animation duration
+    setTimeout(() => {
+      chatbotButton.classList.remove('open');
+      chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+    }, 500); // Adjust this time according to the animation duration
 
     popupMessage.style.display = "none"; // Hide popup message when chat is open
   } else {
@@ -96,7 +96,7 @@ function addMessage(text, sender) {
 }
 
 // Example: Adding a user message
-//addMessage("Hello, I need help with my account.", "user"); // User message
+// addMessage("Hello, I need help with my account.", "user"); // User message
 
 // Inactivity Timer
 function resetInactivityTimer() {
@@ -149,13 +149,13 @@ function sendMessage() {
   document.getElementById('userInput').value = ''; // Clear the input field
 }
 
-  function normalize(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\s]|_/g, "")  // Remove punctuation
-      .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
-      .trim();
-  }
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]|_/g, "")  // Remove punctuation
+    .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
+    .trim();
+}
 
 // Send message when user presses enter
 document.getElementById('userInput').addEventListener('keypress', function (e) {
