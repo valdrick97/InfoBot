@@ -12,8 +12,8 @@ body {
 
 /* Chatbot icon: Circle form in the center of the screen */
 .bot-circle {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   background-color: #007bff;
   border-radius: 50%;
   display: flex;
