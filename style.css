@@ -100,7 +100,7 @@ body {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%; /* Take full width of the bottom */
+  width: 80%; /* Take full width of the bottom */
   background: white;
   display: flex;
   padding: 10px;
