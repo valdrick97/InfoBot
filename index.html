@@ -1,215 +1,48 @@
-// Ensure the bot is only visible when needed, no open/close toggle required
-const chatContainer = document.getElementById('chatBox');
-const popupMessage = document.getElementById('popupMessage');
-const userInputField = document.getElementById('userInput');
-const sendButton = document.getElementById('sendButton');
-let faqData = [];
-let fuzzySet = null;
-let isChatInitialized = false;
-let inactivityTimer;
-let isInactivityPromptShown = false;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot</title>
+  <!-- Link to your CSS file (make sure it includes styles for the bot circle, chat box, input container, popup message, 
+       and transition states such as the 'active-chat' class) -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <!-- Bot Circle: Initially large and centered -->
+  <div id="botCircle" class="bot-circle">
+    <img src="chatbot-icon.png" alt="Chatbot Icon" id="chatbotIcon">
+  </div>
 
-// Hide the chat initially, and show the popup
-document.addEventListener('DOMContentLoaded', () => {
-  chatContainer.style.display = "none"; // Hide chat initially
-  popupMessage.style.display = "block"; // Show popup message
-  loadChatHistory(); // Load chat history if available
-});
+  <!-- Chat Box: Initially hidden; will slide in from the left when active -->
+  <div id="chatBox" class="chat-box hidden">
+    <!-- Chat messages will be appended here by your JavaScript -->
+  </div>
 
-// Function to check if the chat container is empty
-function isChatContainerEmpty() {
-  return chatContainer.children.length === 0;
-}
+  <!-- Input Container: Fixed at the bottom for user input -->
+  <div id="inputContainer" class="input-container">
+    <input id="userInput" type="text" placeholder="Type a message...">
+    <button id="sendButton" onclick="sendMessage()">Send</button>
+  </div>
 
-// Show the initial bot greeting only once, and only if the chat container is empty
-function displayGreetingIfEmpty() {
-  if (!isChatInitialized && isChatContainerEmpty()) {
-    addMessage("What can I help you with?", "bot");
-    isChatInitialized = true;  // Prevent this greeting from showing again
-  }
-}
+  <!-- Popup Message: Displays a prompt (e.g., "I can help! Ask me anything.") -->
+  <div id="popupMessage" class="popup-message">
+    I can help! Ask me anything.
+  </div>
 
-// Add a message to the chat box
-function addMessage(text, sender) {
-  const message = document.createElement('div');
-  message.textContent = text;
-  message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-  chatContainer.appendChild(message);
-  chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom of the chat box
-  
-  // Only show the greeting message if it hasn't been shown before
-  if (!isChatInitialized) {
-    displayGreetingIfEmpty(); // Show greeting only if it hasn't been shown
-  }
-
-  // Reset inactivity timer whenever a new message is added
-  resetInactivityTimer();
-}
-
-// Example: Adding a user message
-//addMessage("Hello, I need help with my account.", "user");
-
-// Inactivity Timer
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer); // Clear previous timer
-  inactivityTimer = setTimeout(() => {
-    // Show inactivity prompt after 10 minutes of no typing
-    if (!isInactivityPromptShown) {
-      addMessage("Would you like to clear all messages in this chat and start fresh? Yes or No.", "bot");
-      isInactivityPromptShown = true;
-    }
-  }, 10 * 60 * 1000); // 10 minutes
-}
-
-// Handle user input and bot response
-function sendMessage() {
-  const userInput = userInputField.value.trim();
-
-  // Prevent sending an empty message
-  if (!userInput) {
-    return; // Do nothing if the input is empty
-  }
-
-  if (userInput.length > 200) {
-    addMessage("Your question is too long. Please keep it under 200 characters.", 'bot');
-    return;
-  }
-
-  // Always show the user input
-  addMessage(userInput, 'user'); // Add user input to chat
-
-  // Check if the input matches "EmployeeID ConfirmationNumber" format
-  if (/^\d{5}\s+[A-Za-z0-9]+$/.test(userInput)) {
-    submitToGoogleForm(userInput); // If valid, submit the form and skip FAQ matching
-    userInputField.value = ''; // Clear the input field after submission
-    return; // Exit to avoid FAQ logic being processed
-  }
-
-  // Process FAQ matching logic if the input isn't in the correct format
-  let bestMatch = fuzzySet.get(userInput);
-  let response = "I'm sorry, I don't understand that question.";
-
-  if (bestMatch && bestMatch.length > 0 && bestMatch[0][0] > 0.7) {
-    let faq = faqData.find(f => normalize(f.question) === bestMatch[0][1]); // Directly using bestMatch[0][1]
-    response = faq ? faq.answer : "I couldn't find a matching answer. Can you rephrase your question?";
-  } else {
-    response = "I couldn't find a matching answer. Can you rephrase your question?";
-  }
-
-  addMessage(response, 'bot');
-  userInputField.value = ''; // Clear the input field
-}
-
-// Normalize text for fuzzy search
-function normalize(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s]|_/g, "")  // Remove punctuation
-    .replace(/\s+/g, " ")       // Replace multiple spaces with a single space
-    .trim();
-}
-
-// Save chat history to localStorage with a timestamp
-function saveChatHistory() {
-  const chatMessages = Array.from(chatContainer.children).map(el => ({
-    text: el.textContent,
-    sender: el.classList.contains('user-message') ? 'user' : 'bot',
-    timestamp: Date.now() // Add a timestamp when the message is saved
-  }));
-  localStorage.setItem('chatHistory', JSON.stringify(chatMessages));
-}
-
-// Load chat history from localStorage and filter out expired messages
-function loadChatHistory() {
-  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours (in milliseconds)
-  const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-  
-  const validChatHistory = chatHistory.filter(msg => {
-    // Check if the message is still within the expiration time
-    return Date.now() - msg.timestamp < EXPIRATION_TIME;
-  });
-
-  // Load only valid messages
-  validChatHistory.forEach(msg => addMessage(msg.text, msg.sender));
-  
-  // Save the filtered history back to localStorage
-  localStorage.setItem('chatHistory', JSON.stringify(validChatHistory));
-}
-
-// Optional: Clear chat history after a set duration
-function clearChatHistoryAfterTime() {
-  const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // Set expiration to 24 hours
-  setTimeout(() => {
-    localStorage.removeItem('chatHistory'); // Remove chat history after the set time
-  }, EXPIRATION_TIME);
-}
-
-// Clear chat history based on user response to inactivity prompt
-function clearChatHistory() {
-  chatContainer.innerHTML = ''; // Clear chat box
-  saveChatHistory(); // Save cleared history
-  isInactivityPromptShown = false; // Reset inactivity prompt flag
-}
-
-// Handle user response to inactivity prompt (yes or no)
-function handleInactivityResponse(response) {
-  if (response.toLowerCase() === 'yes') {
-    clearChatHistory();
-    addMessage("The chat has been cleared and will start fresh.", "bot");
-  } else {
-    addMessage("Alright, continuing from where we left off.", "bot");
-  }
-}
-
-// Listen for yes/no responses to the inactivity prompt
-userInputField.addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    const userInput = userInputField.value.trim();
-    if (isInactivityPromptShown && (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'no')) {
-      handleInactivityResponse(userInput);
-    }
-  }
-});
-
-// Fetch FAQ data and categories
-fetch('https://raw.githubusercontent.com/valdrick97/InfoBot/main/faqData.json')
-  .then(response => {
-    if (!response.ok) throw new Error('Failed to load FAQ data');
-    return response.json();
-  })
-  .then(data => {
-    faqData = data.faqs;
-    fuzzySet = FuzzySet(faqData.map(faq => faq.question));
-    fuzzySet = FuzzySet(faqData.map(faq => normalize(faq.question)));
-  })
-  .catch(error => {
-    console.error('Error loading FAQ data:', error);
-    addMessage("Sorry, I'm having trouble loading my knowledge base. Please try again later.", 'bot');
-  });
-
-function submitToGoogleForm(userInput) {
-  const [employeeId, confirmationNumber] = userInput.split(' ');
-
-  const formData = new FormData();
-  formData.append('entry.571940493', employeeId); // Employee ID field
-  formData.append('entry.1140129675', confirmationNumber); // Confirmation Number field
-
-  addMessage("Submitting your information...", "bot");
-
-  // Submit data to Google Apps Script URL
-  fetch('https://script.google.com/macros/s/AKfycbydb_c8oJxxE-sTgfxX46TKWDqRV7jqZ9A-YwkVM0k1MSoNGOAFMm9Y2iKfkEEpahURKA/exec', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (response.ok) {
-      addMessage(`Your information has been successfully submitted! Employee ID: ${employeeId}, Confirmation Number: ${confirmationNumber}`, "bot");
-    } else {
-      addMessage("There was an issue submitting your information. Please try again.", "bot");
-    }
-  })
-  .catch(error => {
-    console.error('Network error:', error);
-    addMessage("There was an error submitting your information. Please try again later.", "bot");
-  });
-}
+  <!-- JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/fuzzyset.js"></script>
+  <!-- Bot functionality; this file should handle the listening animation, state transitions, etc. -->
+  <script src="chatbot.js"></script>
+  <!-- Optionally, if you have website-specific JS, include it here -->
+  <script>
+    // Add an event listener for the 'Enter' key on the input field
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
