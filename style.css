@@ -12,8 +12,8 @@ body {
 
 /* Chatbot icon: Circle form in the center of the screen */
 .bot-circle {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   background-color: #007bff;
   border-radius: 50%;
   display: flex;
@@ -26,8 +26,8 @@ body {
   transform: translate(-50%, -50%);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
-}
-
+} 
+  
 /* Move and shrink the icon when chat box is opened */
 .bot-circle.move-to-right {
   left: 80%;
@@ -50,8 +50,8 @@ body {
 }
 
 .bot-circle img {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
 }
 
 /* Chat Box */
@@ -59,8 +59,8 @@ body {
   position: fixed;
   bottom: 80px;
   left: 0;
-  width: 300px;
-  height: 400px;
+  width: 350px;
+  height: 450px;
   background-color: white;
   border-radius: 10px;
   display: none;
@@ -98,33 +98,39 @@ body {
 /* Input Container */
 .input-container {
   position: fixed;
-  bottom: 10px;
-  right: 30px;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Take full width of the bottom */
+  background: white;
   display: flex;
-  gap: 10px;
+  padding: 10px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .input-container input {
-  width: 200px;
-  padding: 10px;
+  flex: 1; /* Take most of the space */
+  padding: 12px;
+  font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
 
-.input-container button {
-  padding: 10px 20px;
+input-container button {
+  padding: 12px 20px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px; /* Space between input and button */
 }
 
 .input-container button:hover {
   background-color: #0056b3;
 }
 
-/* Popup message */
+/* Popup message 
 .popup-message {
   position: fixed;
   bottom: 20px;
@@ -134,5 +140,5 @@ body {
   padding: 15px;
   border-radius: 50px;
   display: block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
 }
