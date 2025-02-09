@@ -1,143 +1,180 @@
-/* Basic styles for the chatbot icon and chat box */
+
+/* ==================== */
+/* Global & Base Styles */
+/* ==================== */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
+  overflow-x: hidden; /* Prevent horizontal scroll during transitions */
 }
 
-/* Chatbot icon: Circle form in the center of the screen */
-.bot-circle {
-  width: 200px;
-  height: 200px;
-  background-color: #007bff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+/* ==================== */
+/* Chatbot Button (Bot Circle) */
+/* ==================== */
+/* INITIAL STATE: Large, centered bot button */
+#chatbotButton {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
-} 
-  
-/* Move and shrink the icon when chat box is opened */
-.bot-circle.move-to-right {
-  left: 75%;
-  transform: translateX(-100%) translateY(-50%);
+  width: 120px;
+  height: 120px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  overflow: hidden;
+  transition: all 0.5s ease;
 }
 
-.bot-circle.shrink {
-  width: 40px;
-  height: 40px;
-}
-
-.bot-circle.move-to-center {
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-}
-
-.bot-circle.grow {
+/* When the chat becomes active, the button shrinks and moves to the bottom–right */
+#chatbotButton.active {
+  top: auto;
+  bottom: 20px;
+  left: auto;
+  right: 20px;
+  transform: none;
   width: 60px;
   height: 60px;
 }
 
-.bot-circle img {
-  width: 80px;
-  height: 80px;
+/* Ensure the image fills the button */
+#chatbotButton img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease, opacity 0.3s ease;
 }
 
-/* Chat Box */
-#chatBox {
+/* ==================== */
+/* Chat Container (Message Area) */
+/* ==================== */
+/* INITIAL STATE: Hidden and off–screen to the left */
+.chat-container {
+  display: none; /* Hidden initially */
   position: fixed;
-  bottom: 80px;
-  left: 0;
-  width: 500px;
-  height: 700px;
-  background-color: white;
+  bottom: 80px; /* Positioned above the input container */
+  left: -400px; /* Off–screen to the left */
+  width: 370px;
+  height: 500px;
+  background-color: #f9f9f9;
   border-radius: 10px;
-  display: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  transition: left 0.5s ease, transform 0.5s ease;
+}
+
+/* ACTIVE STATE: When the chat is open, slide the container in from the left */
+.chat-container.active {
+  left: 20px;
+  display: flex; /* Ensure it's visible */
+}
+
+/* Chat Box inside the container */
+.chat-box {
+  flex-grow: 1;
   overflow-y: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.5s ease;
-}
-
-#chatBox.open {
-  display: flex;
-}
-
-/* Chat messages */
-.user-message,
-.bot-message {
   padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
-  max-width: 80%;
-  margin-left: 10px;
-  margin-right: 10px;
+  max-height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
 }
 
-.user-message {
-  background-color: #d1e7dd;
-  align-self: flex-end;
-}
-
-.bot-message {
-  background-color: #f1f1f1;
-  align-self: flex-start;
-}
-
-/* Input Container */
+/* ==================== */
+/* Input Container (At Bottom of Chat) */
+/* ==================== */
 .input-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: auto; 
-  background: white;
   display: flex;
   padding: 10px;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 95%;
 }
 
 .input-container input {
-  flex: 1; /* Take most of the space */
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
 }
 
 .input-container button {
-  padding: 12px 20px;
+  margin-left: 10px;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   cursor: pointer;
-  font-size: 16px;
-  margin-left: 10px; /* Space between input and button */
 }
 
 .input-container button:hover {
   background-color: #0056b3;
 }
- 
+
+/* ==================== */
+/* Popup Message (Listening Prompt) */
+/* ==================== */
 .popup-message {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
+  bottom: 100px;  /* Adjust as needed */
+  right: 30px;
+  background-color: #ff9800;
   color: white;
-  padding: 15px;
+  padding: 10px 20px;
   border-radius: 50px;
-  display: block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+  font-size: 16px;
+  display: block; /* Visible initially */
+  z-index: 999;
+  transition: opacity 0.5s ease;
 }
+
+/* When chat becomes active, hide the popup message */
+body.active-chat .popup-message {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==================== */
+/* Optional Animations for Bot Button */
+/* ==================== */
+@keyframes openChatAnimation {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(360deg) translateY(-20px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes closeChatAnimation {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(15px) scale(1.2);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* You can apply these animations via JavaScript by toggling classes on the button if desired */
