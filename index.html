@@ -4,39 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot</title>
+  <!-- Link to your CSS file (make sure it includes styles for the bot circle, chat box, input container, popup message, 
+       and transition states such as the 'active-chat' class) -->
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <!-- Chatbot Icon -->
-  <button id="chatbotButton" onclick="toggleChat()">
-  <img src="chatbot-icon.png" alt="Chatbot" id="chatbotIcon" />
-</button>
-
-  <!-- Chat Container -->
-  <div class="chat-container" id="chatContainer">
-    <div class="chat-box" id="chatBox"></div>
-    <div class="input-container">
-      <input id="userInput" type="text" placeholder="Type a message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <!-- Bot Circle: Initially large and centered -->
+  <div id="botCircle" class="bot-circle">
+    <img src="chatbot-icon.png" alt="Chatbot Icon" id="chatbotIcon">
   </div>
 
-  <!-- Category Container (Outside Chat Container) -->
-  <!-- div id="categoryContainer" class="category-container"></div -->
+  <!-- Chat Box: Initially hidden; will slide in from the left when active -->
+  <div id="chatBox" class="chat-box hidden">
+    <!-- Chat messages will be appended here by your JavaScript -->
+  </div>
 
-  <!-- Pop-up Message -->
-  <div class="popup-message" id="popupMessage">I can help! Ask me anything.</div>
+  <!-- Input Container: Fixed at the bottom for user input -->
+  <div id="inputContainer" class="input-container">
+    <input id="userInput" type="text" placeholder="Type a message...">
+    <button id="sendButton" onclick="sendMessage()">Send</button>
+  </div>
+
+  <!-- Popup Message: Displays a prompt (e.g., "I can help! Ask me anything.") -->
+  <div id="popupMessage" class="popup-message">
+    I can help! Ask me anything.
+  </div>
 
   <!-- JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/fuzzyset.js"></script>
+  <!-- Bot functionality; this file should handle the listening animation, state transitions, etc. -->
   <script src="chatbot.js"></script>
-
+  <!-- Optionally, if you have website-specific JS, include it here -->
   <script>
-    // Add an event listener for the 'Enter' key in case the user wants to submit via keyboard
+    // Add an event listener for the 'Enter' key on the input field
     document.getElementById('userInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
-        sendMessage(); // Call sendMessage when 'Enter' is pressed
+        sendMessage();
       }
     });
   </script>
