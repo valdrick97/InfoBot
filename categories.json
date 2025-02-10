@@ -4,7 +4,15 @@
       "name": "LMS",
       "questions": [
         "How do I reset my password?",
-        "How do I access my courses?"
+        "How do I access my courses?",
+        "What is the tribal rates?"
+      ]
+    },
+    {
+      "name": "Pool",
+      "questions": [
+        "When is the pool opening",
+        "Is the pool open?"
       ]
     },
     {
